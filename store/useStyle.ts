@@ -172,10 +172,14 @@ type LocalStorageHookProps<T> = {
 function useLocalStorage<T>(props: LocalStorageHookProps<T>) {
     const value = ref<T>(props.default);
 
-    const valueStr = localStorage.getItem(props.key);
-    value.value = valueStr ? JSON.parse(valueStr) : props.default;
+    if (process.client) {
+        const valueStr = localStorage.getItem(props.key);
+        value.value = valueStr ? JSON.parse(valueStr) : props.default;
+    }
     watch(() => value.value, (val) => {
-        localStorage.setItem(props.key, JSON.stringify(val));
+        if (process.client) {
+            localStorage.setItem(props.key, JSON.stringify(val));
+        }
     }, { deep: true, immediate: true });
 
     return value;

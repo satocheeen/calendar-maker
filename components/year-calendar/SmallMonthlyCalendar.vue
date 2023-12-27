@@ -108,6 +108,7 @@ export default defineComponent({
     font-family: v-bind(dayFontFamily);
     font-size: v-bind(dayFontSize);
     color: v-bind(dayColor);
+    text-align: right;
 
     &.holiday {
         color: v-bind(holidayColor);

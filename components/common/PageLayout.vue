@@ -29,6 +29,7 @@ export default defineComponent({
 
         const styleElement = ref<HTMLElement|null>(null);
         watch(() => props.orientation, (val) => {
+            if (!process.client) return;
             if (styleElement.value) {
                 document.head.removeChild(styleElement.value);
             }
