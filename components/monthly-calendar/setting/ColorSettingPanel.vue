@@ -1,0 +1,157 @@
+<template>
+    <v-card>
+        <v-card-title primary-title>
+            色設定
+        </v-card-title>
+        <v-card-actions>
+            <v-btn flat color="primary" @click="onSaveToPreset">プリセット保存</v-btn>
+
+            <v-menu
+                :close-on-content-click="false"
+            >
+                <template v-slot:activator="{ props }">
+                    <v-btn flat color="primary" v-bind="props"
+                    >
+                        プリセット読込
+                    </v-btn>
+                </template>
+                <PresetSelector
+                    @select="setPreset" @delete="removePreset" /> 
+
+            </v-menu>
+        </v-card-actions>
+        <v-card-text>
+            <ColorSettingItem
+                label="画像罫線"
+                :colors="[{
+                    defineKey: 'imageBorderColor'
+                }]"
+            />
+            <ColorSettingItem
+                label="年月"
+                :colors="[{
+                    defineKey: 'yearMonthTextColor',
+                    label: '文字'
+                }]"
+            />
+            <ColorSettingItem
+                label="平日"
+                :colors="[{
+                    defineKey: 'weekdayTextColor',
+                    label: '文字',
+                }, {
+                    defineKey: 'weekdayBackgroundColor',
+                    label: '背景',
+                }]"
+            />
+            <ColorSettingItem
+                label="土日祝"
+                :colors="[{
+                    defineKey: 'holidayTextColor',
+                    label: '文字',
+                }, {
+                    defineKey: 'holidayBackgroundColor',
+                    label: '背景',
+                }]"
+            />
+            <ColorSettingItem
+                label="前月・翌月"
+                :colors="[{
+                    defineKey: 'anotherMonthsDayTextColor',
+                    label: '文字',
+                }]"
+            />
+            <ColorSettingItem
+                label="祝日・イベント名"
+                :colors="[{
+                    defineKey: 'eventNameTextColor',
+                    label: '文字',
+                }]"
+            />
+            <ColorSettingItem
+                label="曜日ラベル"
+                :colors="[{
+                    defineKey: 'weekdayLabelTextColor',
+                    label: '文字',
+                }, {
+                    defineKey: 'weekdayLabelBackgroundColor',
+                    label: '背景',
+                }]"
+            />
+            <ColorSettingItem
+                label="罫線"
+                :colors="[{
+                    defineKey: 'borderColor',
+                }]"
+            />
+        </v-card-text>
+    </v-card>    
+</template>
+
+<script lang="ts">
+import { type MonthlyColorDefine } from '@/store/types';
+import { StyleStoreKey } from '@/store/useStyle';
+import { onMounted, onUnmounted } from 'vue';
+import { ref, defineComponent, inject } from 'vue';
+import PresetSelector from './PresetSelector.vue';
+import ColorSettingItem from './ColorSettingItem.vue';
+
+export default defineComponent({
+    name: 'ColorSettingPanel',
+    components: { PresetSelector, ColorSettingItem },
+    setup() {
+        const isShowPresetSelector = ref(false);
+
+        const onAreaClick = () => {
+            if (isShowPresetSelector.value) {
+                isShowPresetSelector.value = false;
+            }
+        }
+
+        onMounted(() => {
+            document.addEventListener('click', onAreaClick)
+        })
+
+        onUnmounted(() => {
+            document.removeEventListener('click', onAreaClick);
+        })
+
+        const styleStore = inject(StyleStoreKey);
+
+        const onSaveToPreset = () => {
+            if (!styleStore) return;
+            const yearMonth = styleStore.yearMonth.value;
+            const currentColors = styleStore.getCalendarStyleDefine(yearMonth.year, yearMonth.month).colors;
+            styleStore.addPreset(currentColors);
+        };
+        const switchShowPresetSelector = () => {
+            isShowPresetSelector.value = !isShowPresetSelector.value;
+        };
+
+        /**
+         * 現在表示中のカレンダーに指定のプリセットカラーを設定する
+         * @param preset 
+         */
+        const setPreset = (preset: MonthlyColorDefine) => {
+            if (!styleStore) return;
+            styleStore.setPreset(styleStore.yearMonth.value.year, styleStore.yearMonth.value.month, preset);
+            isShowPresetSelector.value = false;
+        }
+
+        const removePreset = (index: number) => {
+            styleStore?.removePreset(index);
+        }
+
+        return {
+            onSaveToPreset,
+            isShowPresetSelector,
+            switchShowPresetSelector,
+            setPreset,
+            removePreset,
+            onAreaClick,
+        };
+    }
+});
+</script>
+
+<style lang="scss" module></style>
