@@ -96,6 +96,7 @@ export default defineComponent({
     font-family: v-bind(monthFontFamily);
     font-size: v-bind(monthFontSize);
     color: v-bind(monthColor);
+    text-align: center;
 }
 .dateArea {
     list-style: none;

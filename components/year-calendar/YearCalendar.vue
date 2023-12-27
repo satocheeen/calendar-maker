@@ -78,6 +78,7 @@ export default defineComponent({
     font-size: v-bind(yearFontSize);
     color: v-bind(yearColor);
     margin-bottom: 2rem;
+    text-align: center;
 }
 .minimum {
     .year {
