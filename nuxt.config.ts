@@ -21,5 +21,14 @@ export default defineNuxtConfig({
         transformAssetUrls,
       },
     },
-  },  
+  },
+  app: {
+    head: {
+      title: 'Calendar Maker',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'description', content: 'make original calendar' }
+      ]
+    }
+  }  
 })
