@@ -1,3 +1,7 @@
+export type Presets = {
+    defaultIndex: number;
+    presets: MonthlyColorDefine[];
+}
 export type MonthlyColorDefine = {
     imageBorderColor: string;
 
