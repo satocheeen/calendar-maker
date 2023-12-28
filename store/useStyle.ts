@@ -32,27 +32,29 @@ export default function useStyle() {
         default: defaultYearlyDefine,
     })
 
-    const initializeCalendarStyleDefine = (year: number, month: number) => {
-        const yearMonth = year + '-' + month;
-        monthlyDefine.value[yearMonth] = {
-            colors: defaultPresets[0],
-        }
-    }
+    const defaultPreset = computed(() => {
+        // TODO: ユーザがデフォルトを指定できるようにする
+        return defaultPresets[0];
+    })
 
     const setMonthlyCalendarSetting = (year: number, month: number, values: Partial<MonthlyCalendarDefine>) => {
         const yearMonth = year + '-' + month;
-        if (!(yearMonth in monthlyDefine.value)) {
-            initializeCalendarStyleDefine(year, month);
-        }
         monthlyDefine.value[yearMonth] = Object.assign({}, monthlyDefine.value[yearMonth], values);
     }
 
     const getCalendarStyleDefine = (year: number, month: number) => {
         const yearMonth = year + '-' + month;
-        if (!(yearMonth in monthlyDefine.value)) {
-            initializeCalendarStyleDefine(year, month);
-        }
-        return monthlyDefine.value[yearMonth];
+        const savedColors = (monthlyDefine.value[yearMonth] ?? {}).colors ?? {};
+        const colors = Object.assign(defaultPreset.value, savedColors);
+        const define = Object.assign({}, monthlyDefine.value[yearMonth] ?? {}, { colors });
+        return define;
+    }
+
+    const setMonthlyCalendarColor = (year: number, month: number, key: keyof MonthlyColorDefine, color: string) => {
+        const yearMonth = year + '-' + month;
+        const currentColors = (monthlyDefine.value[yearMonth] ?? {}).colors ?? {};
+        const newColors = Object.assign(currentColors, { [key]: color });
+        monthlyDefine.value[yearMonth] = Object.assign({}, monthlyDefine.value[yearMonth], {colors: newColors });
     }
 
     /**
@@ -144,6 +146,7 @@ export default function useStyle() {
         yearMonth,
         setMonthlyCalendarSetting,
         getCalendarStyleDefine,
+        setMonthlyCalendarColor,
         presets,
         addPreset,
         removePreset,

@@ -60,9 +60,7 @@ export default defineComponent({
         const handleChangeColor = (index: number, event: Event) => {
             const target = event.target as HTMLInputElement;
             const key = props.colors[index].defineKey;
-            const newDefine = Object.assign({}, calendarStyleDefine.value?.colors) as MonthlyColorDefine;
-            newDefine[key] = target.value;
-            styleStore?.setMonthlyCalendarSetting(yearMonth.value.year, yearMonth.value.month, { colors: newDefine });
+            styleStore?.setMonthlyCalendarColor(yearMonth.value.year, yearMonth.value.month, key, target.value);
         }
 
         return {
