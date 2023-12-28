@@ -4,29 +4,36 @@
             色設定
         </v-card-title>
         <v-card-actions>
-            <v-tooltip activator="" text="保存すると他の年月でもカラーセットを使用できるようになります">
-                <template v-slot:activator="{ props }">
-                    <v-btn flat color="primary" v-bind="props" @click="onSaveToPreset">プリセット保存</v-btn>
-                </template>
-            </v-tooltip>
+            <ClientOnly>
+                <v-tooltip :text="savePresetTooltip"
+                    @update:model-value="resetPresetSavedFlag"
+                    location="start"
+                >
+                    <template v-slot:activator="{ props }">
+                        <v-btn flat color="primary" v-bind="props" @click="onSaveToPreset">プリセット保存</v-btn>
+                    </template>
+                </v-tooltip>
+            </ClientOnly>
 
-            <v-menu
-                :close-on-content-click="false"
-            >
-                <template v-slot:activator="{ props }">
-                    <v-tooltip activator="" text="保存済みのカラーセットを読み込みます">
-                        <template v-slot:activator="{ props: props2 }">
-                            <v-btn flat color="primary" v-bind="{...props, ...props2}"
-                            >
-                                プリセット読込
-                            </v-btn>
-                        </template>
-                    </v-tooltip>
-                </template>
-                <PresetSelector
-                    @select="setPreset" @delete="removePreset" /> 
+            <ClientOnly>
+                <v-menu
+                    :close-on-content-click="false"
+                >
+                    <template v-slot:activator="{ props }">
+                        <v-tooltip activator="" text="保存済みのカラーセットを読み込みます">
+                            <template v-slot:activator="{ props: props2 }">
+                                <v-btn flat color="primary" v-bind="{...props, ...props2}"
+                                >
+                                    プリセット読込
+                                </v-btn>
+                            </template>
+                        </v-tooltip>
+                    </template>
+                    <PresetSelector
+                        @select="setPreset" @delete="removePreset" /> 
 
-            </v-menu>
+                </v-menu>
+            </ClientOnly>
         </v-card-actions>
         <v-card-text>
             <ColorSettingItem
@@ -126,11 +133,27 @@ export default defineComponent({
 
         const styleStore = inject(StyleStoreKey);
 
+        const savedFlag = ref(false);
+        const savePresetTooltip = computed(() => {
+            if (savedFlag.value) {
+                return '保存しました';
+            }
+            return '保存すると他の年月でもカラーセットを使用できるようになります';
+        })
+
+        const resetPresetSavedFlag = () => {
+            // すぐにフラグを変更すると、Tooltipが非表示になる前にメッセージが変わってしまうので、若干時間をおく
+            setTimeout(() => {
+                savedFlag.value = false;
+            }, 500)
+        }
+
         const onSaveToPreset = () => {
             if (!styleStore) return;
             const yearMonth = styleStore.yearMonth.value;
             const currentColors = styleStore.getCalendarStyleDefine(yearMonth.year, yearMonth.month).colors;
             styleStore.addPreset(currentColors);
+            savedFlag.value = true;
         };
         const switchShowPresetSelector = () => {
             isShowPresetSelector.value = !isShowPresetSelector.value;
@@ -157,6 +180,8 @@ export default defineComponent({
             setPreset,
             removePreset,
             onAreaClick,
+            savePresetTooltip,
+            resetPresetSavedFlag,
         };
     }
 });

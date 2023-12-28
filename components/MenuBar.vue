@@ -6,26 +6,28 @@
             <nav-link to="/yearly">Yearly</nav-link>
         </div>
         <div :class="$style.menu">
-            <v-tooltip activator="" text="設定出力">
-                <template v-slot:activator="{ props }">
-                    <v-btn
+            <client-only>
+                <v-tooltip activator="" text="設定出力">
+                    <template v-slot:activator="{ props }">
+                        <v-btn
+                            v-bind="props"
+                            variant="plain" color="secondary"
+                            icon="mdi-content-save"
+                            @click="onFileOutput"
+                        />
+                    </template>
+                </v-tooltip>
+                <v-tooltip activator="" text="設定読込">
+                    <template v-slot:activator="{ props }">
+                        <v-btn
                         v-bind="props"
-                        variant="plain" color="secondary"
-                        icon="mdi-content-save"
-                        @click="onFileOutput"
-                    />
-                </template>
-            </v-tooltip>
-            <v-tooltip activator="" text="設定読込">
-                <template v-slot:activator="{ props }">
-                    <v-btn
-                    v-bind="props"
-                        variant="plain" color="secondary"
-                        icon="mdi-download"
-                        @click="onFileReadClick"
-                    />
-                </template>
-            </v-tooltip>
+                            variant="plain" color="secondary"
+                            icon="mdi-download"
+                            @click="onFileReadClick"
+                        />
+                    </template>
+                </v-tooltip>
+            </client-only>
         </div>
     </div>    
 </template>
