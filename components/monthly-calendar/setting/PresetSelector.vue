@@ -46,11 +46,10 @@ import { type MonthlyColorDefine } from '@/store/types';
 import { StyleStoreKey } from '@/store/useStyle';
 import { defineComponent, inject, computed } from 'vue';
 import PresetBar from './PresetBar.vue';
-import draggable from 'vuedraggable';
 
 export default defineComponent({
     name: "PresetSelector",
-    components: { PresetBar, draggable },
+    components: { PresetBar },
     emits: {
         // eslint-disable-next-line
         select: (preset: MonthlyColorDefine) => true,

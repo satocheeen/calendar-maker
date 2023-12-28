@@ -1,9 +1,11 @@
 <template>
-    <div :class="$style.image"
+    <div :class="[$style.image]"
         @mousedown="handleMouseDown"
         @mouseup="handleMouseUp"
         @mousemove="handleMouseMove"
+        v-if="hasImage"
     />
+    <div :class="[$style.image, $style.noImage]" v-else />
 </template>
 
 <script lang="ts">
@@ -38,6 +40,10 @@ export default defineComponent({
             const path = calendarStyleDefine.value?.imagePath;
             return path ? `url(${path})` : undefined;
         });
+
+        const hasImage = computed(() => {
+            return calendarStyleDefine.value?.imagePath !== undefined;
+        })
 
         const imageBorderColor = computed(() => {
             return styleStore?.getCalendarStyleDefine(props.year, props.month).colors.imageBorderColor;
@@ -110,6 +116,7 @@ export default defineComponent({
             handleMouseMove,
             offsetX,
             offsetY,
+            hasImage,
         }
 
     },
@@ -130,6 +137,10 @@ export default defineComponent({
     background-size: cover;
 
     cursor: pointer;
+
+    &.noImage {
+        cursor: default;
+    }
 }
 
 
