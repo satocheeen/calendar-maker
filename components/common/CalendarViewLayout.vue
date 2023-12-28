@@ -18,6 +18,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" module>
+$sidebarWidth: 20rem;
+
 .container {
     display: flex;
     justify-content: space-between;
@@ -34,7 +36,8 @@ export default defineComponent({
     }
 }
 .calendar {
-    width: calc(100vw - 420px);
+    width: calc(100vw - ($sidebarWidth + 2px));
+    box-sizing: border-box;
     overflow-y: auto;
     user-select: none;
 
@@ -42,8 +45,7 @@ export default defineComponent({
 }
 .sidebar {
     box-sizing: border-box;
-    width: 400px;
-    padding: 20px;
+    width: $sidebarWidth;
     overflow-y: scroll;
 
     text-align: left;

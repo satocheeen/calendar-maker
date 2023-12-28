@@ -1,18 +1,20 @@
 <template>
-    <v-select
-        :label="$props.label"
-        :items="fonts"
-        v-model:model-value="currentValue"
-    >
-        <template v-slot:item="{ props, item }">
-            <v-list-item
-                v-bind="props"
-                :style="{ fontFamily: item.value }"
-                :subtitle="item.value"
-                title="123ABCabc日月火"
-            />
-        </template>
-    </v-select>
+    <ClientOnly>
+        <v-select
+            :label="$props.label"
+            :items="fonts"
+            v-model:model-value="currentValue"
+        >
+            <template v-slot:item="{ props, item }">
+                <v-list-item
+                    v-bind="props"
+                    :style="{ fontFamily: item.value }"
+                    :subtitle="item.value"
+                    title="123ABCabc日月火"
+                />
+            </template>
+        </v-select>
+    </ClientOnly>
 </template>
 
 <script lang="ts">

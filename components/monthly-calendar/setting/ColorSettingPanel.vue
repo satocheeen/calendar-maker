@@ -4,16 +4,24 @@
             色設定
         </v-card-title>
         <v-card-actions>
-            <v-btn flat color="primary" @click="onSaveToPreset">プリセット保存</v-btn>
+            <v-tooltip activator="" text="保存すると他の年月でもカラーセットを使用できるようになります">
+                <template v-slot:activator="{ props }">
+                    <v-btn flat color="primary" v-bind="props" @click="onSaveToPreset">プリセット保存</v-btn>
+                </template>
+            </v-tooltip>
 
             <v-menu
                 :close-on-content-click="false"
             >
                 <template v-slot:activator="{ props }">
-                    <v-btn flat color="primary" v-bind="props"
-                    >
-                        プリセット読込
-                    </v-btn>
+                    <v-tooltip activator="" text="保存済みのカラーセットを読み込みます">
+                        <template v-slot:activator="{ props: props2 }">
+                            <v-btn flat color="primary" v-bind="{...props, ...props2}"
+                            >
+                                プリセット読込
+                            </v-btn>
+                        </template>
+                    </v-tooltip>
                 </template>
                 <PresetSelector
                     @select="setPreset" @delete="removePreset" /> 

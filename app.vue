@@ -40,22 +40,6 @@ html::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
-
-// フォントの基準サイズがカレンダーに合わせて変わるので、コントロールパネルで使用するフォントサイズは単位をremからemに変更
-.v-card-title {
-  font-size: 1.1em !important;
-}
-.v-card-text, .v-btn--size-default, .text-button {
-  font-size: 0.875em !important;
-}
-.v-input,.v-field,.v-label {
-  font-size: 1em !important;
-}
-.v-overlay-contaier {
-  * {
-    font-size: 1em !important;
-  }
-}
 </style>
 
 <style lang="scss" module>
