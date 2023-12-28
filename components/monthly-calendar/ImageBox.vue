@@ -52,8 +52,10 @@ export default defineComponent({
         }, { immediate: true })
 
         const handleMouseUp = () => {
+            if (draging) {
+                styleStore?.setMonthlyCalendarSetting(props.year, props.month, { imageOffset: offset.value });
+            }
             draging = false;
-            styleStore?.setMonthlyCalendarSetting(props.year, props.month, { imageOffset: offset.value });
         }
 
         onMounted(() => {

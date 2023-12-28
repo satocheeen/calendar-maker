@@ -1,5 +1,5 @@
 import { type InjectionKey, ref, watch } from "vue";
-import type { FontDefine, MonthlyCalendarCommonDefine, MonthlyCalendarDefine, MonthlyColorDefine, YearlyCalendarStyleDefine } from "./types";
+import type { FontDefine, MonthlyCalendarCommonDefine, MonthlyCalendarDefine, MonthlyColorDefine, Presets, YearlyCalendarStyleDefine } from "./types";
 import { defaultYearlyDefine, defaultMonthlyCalendarCommonDefine, defaultPresets } from "./defaults";
 
 export default function useStyle() {
@@ -22,9 +22,12 @@ export default function useStyle() {
         default: defaultMonthlyCalendarCommonDefine,
     });
 
-    const presets = useLocalStorage<MonthlyColorDefine[]>({
+    const presets = useLocalStorage<Presets>({
         key: 'presets',
-        default: defaultPresets,
+        default: {
+            defaultIndex: 0,
+            presets: defaultPresets,
+        }
     });
 
     const yearlyDefine = useLocalStorage<YearlyCalendarStyleDefine>({
@@ -32,27 +35,29 @@ export default function useStyle() {
         default: defaultYearlyDefine,
     })
 
-    const initializeCalendarStyleDefine = (year: number, month: number) => {
-        const yearMonth = year + '-' + month;
-        monthlyDefine.value[yearMonth] = {
-            colors: defaultPresets[0],
-        }
-    }
+    const defaultPreset = computed(() => {
+        const defaultIndex = presets.value.defaultIndex;
+        return defaultPresets[defaultIndex];
+    })
 
     const setMonthlyCalendarSetting = (year: number, month: number, values: Partial<MonthlyCalendarDefine>) => {
         const yearMonth = year + '-' + month;
-        if (!(yearMonth in monthlyDefine.value)) {
-            initializeCalendarStyleDefine(year, month);
-        }
         monthlyDefine.value[yearMonth] = Object.assign({}, monthlyDefine.value[yearMonth], values);
     }
 
     const getCalendarStyleDefine = (year: number, month: number) => {
         const yearMonth = year + '-' + month;
-        if (!(yearMonth in monthlyDefine.value)) {
-            initializeCalendarStyleDefine(year, month);
-        }
-        return monthlyDefine.value[yearMonth];
+        const savedColors = (monthlyDefine.value[yearMonth] ?? {}).colors ?? {};
+        const colors = Object.assign(defaultPreset.value, savedColors);
+        const define = Object.assign({}, monthlyDefine.value[yearMonth] ?? {}, { colors });
+        return define;
+    }
+
+    const setMonthlyCalendarColor = (year: number, month: number, key: keyof MonthlyColorDefine, color: string) => {
+        const yearMonth = year + '-' + month;
+        const currentColors = (monthlyDefine.value[yearMonth] ?? {}).colors ?? {};
+        const newColors = Object.assign(currentColors, { [key]: color });
+        monthlyDefine.value[yearMonth] = Object.assign({}, monthlyDefine.value[yearMonth], {colors: newColors });
     }
 
     /**
@@ -60,16 +65,20 @@ export default function useStyle() {
      * @returns 
      */
     const addPreset = (colors: MonthlyColorDefine) => {
-        presets.value.push(colors);
+        presets.value.presets.push(colors);
     }
 
     const removePreset = (index: number) => {
-        presets.value = presets.value.filter((_, i) => i !== index);
+        presets.value.presets = presets.value.presets.filter((_, i) => i !== index);
     }
 
     const setPreset = (year: number, month: number, preset: MonthlyColorDefine) => {
         const yearMonth = year + '-' + month;
-        monthlyDefine.value[yearMonth].colors = preset;
+        if (!monthlyDefine.value[yearMonth]) {
+            monthlyDefine.value[yearMonth] = { colors: preset }
+        } else {
+            monthlyDefine.value[yearMonth].colors = preset;
+        }
     }
 
     const updateFontFamily = (target: keyof FontDefine, fontFamily: string|undefined) => {
@@ -144,6 +153,7 @@ export default function useStyle() {
         yearMonth,
         setMonthlyCalendarSetting,
         getCalendarStyleDefine,
+        setMonthlyCalendarColor,
         presets,
         addPreset,
         removePreset,

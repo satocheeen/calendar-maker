@@ -399,7 +399,7 @@ export function getEventDaysOfMonth(year: number, month: number): EventInfo[] {
         })
     })
 
-    console.log('list', list);
+    // console.log('list', list);
     return list;
 }
 
