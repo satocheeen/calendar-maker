@@ -12,20 +12,20 @@
                         <v-icon v-if="item.isDefault" color="secondary">
                             mdi-star
                         </v-icon>
+                        <v-tooltip text="デフォルト値に設定" v-else>
+                            <template v-slot:activator="{ props }">
+                                <v-icon v-bind="props" @click.stop="onChangeDefaultPreset(index)">
+                                    mdi-star-outline
+                                </v-icon>
+                            </template>
+                        </v-tooltip>
+
                     </div>
 
                     <PresetBar :preset="item.preset" />
 
                     <div :class="$style.iconArea">
                         <span v-if="!item.isDefault">
-                            <v-tooltip text="デフォルト値に設定">
-                                <template v-slot:activator="{ props }">
-                                    <v-icon v-bind="props" @click.stop="onChangeDefaultPreset(index)">
-                                        mdi-star
-                                    </v-icon>
-                                </template>
-                            </v-tooltip>
-
                             <v-tooltip text="削除">
                                 <template v-slot:activator="{ props }">
                                     <v-icon v-bind="props" @click.stop="onDelete(index)"  v-if="!item.isDefault">
@@ -111,7 +111,8 @@ export default defineComponent({
 
 .iconArea {
     display: inline-flex;
-    width: 3rem;
+    width: 1.5rem;
+    margin-left: 1rem;
 }
 
 </style>

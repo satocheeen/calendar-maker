@@ -25,6 +25,9 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'Calendar Maker',
+      htmlAttrs: {
+        lang: 'ja',
+      },
       meta: [
         { charset: 'utf-8' },
         { name: 'description', content: 'make original calendar' }
