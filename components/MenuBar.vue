@@ -6,7 +6,7 @@
             <nav-link to="/yearly">Yearly</nav-link>
             <nav-link to="/cover">Cover</nav-link>
         </div>
-        <div :class="$style.menu">
+        <div :class="$style.menu" v-if="showMenu">
             <client-only>
                 <v-tooltip activator="" text="設定出力">
                     <template v-slot:activator="{ props }">
@@ -37,12 +37,18 @@
 import { defineComponent, inject } from 'vue';
 import NavLink from './common/NavLink.vue';
 import { StyleStoreKey } from '../store/useStyle';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
     name: 'MenuBar',
     components: { NavLink },
     setup() {
         const styleStore = inject(StyleStoreKey);
+
+        const route = useRoute();
+        const showMenu = computed(() => {
+            return route.path !== '/';
+        })
 
         const onFileOutput = () => {
             styleStore?.output();
@@ -55,6 +61,7 @@ export default defineComponent({
         return {
             onFileOutput,
             onFileReadClick,
+            showMenu,
         }
 
     }
