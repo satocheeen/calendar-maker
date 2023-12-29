@@ -2,7 +2,7 @@
     <PageLayout orientation="portrait">
         <div :class="$style.container">
             {{ year }}
-            Title
+            {{ title }}
         </div>
     </PageLayout>
 </template>
@@ -40,11 +40,16 @@ export default defineComponent({
             return fontStyle.value?.color;
         })
 
+        const title = computed(() => {
+            return styleStore?.yearlyDefine.value.coverTitle;
+        })
+
         return {
             year,
             fontFamily,
             fontSize,
             color,
+            title,
         };
     },
 });

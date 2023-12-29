@@ -44,6 +44,7 @@ export const defaultYearlyDefine: YearlyCalendarStyleDefine = {
             color: '#808080',
         }
     },
+    coverTitle: 'Calendar',
     divider: {
         size: 30,
         width: 0.1,
