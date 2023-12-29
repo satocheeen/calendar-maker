@@ -1,5 +1,5 @@
 <template>
-    <h2>Calendar Maker</h2>
+    <h2 :class="$style.title">Calendar Maker</h2>
 </template>
 
 <script lang="ts">
@@ -10,4 +10,8 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" module></style>
+<style lang="scss" module>
+.title {
+    font-family: 'Zen Maru Gothic';
+}
+</style>

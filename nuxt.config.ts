@@ -8,6 +8,7 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   modules: [
+    '@nuxtjs/google-fonts',
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         // @ts-expect-error
@@ -15,6 +16,11 @@ export default defineNuxtConfig({
       })
     },
   ],
+  googleFonts: {
+    families: {
+      'Zen Maru Gothic': true,
+    }
+  },
   vite: {
     vue: {
       template: {

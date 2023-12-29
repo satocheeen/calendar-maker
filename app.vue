@@ -24,7 +24,7 @@ export default defineComponent({
     },
     components: {
         MenuBar,
-        [process.client ? 'WebFontLoader': '']: () => import('@/components/common/WebFontLoader.vue'),
+        WebFontLoader: () => process.client && import('@/components/common/WebFontLoader.vue'),
     }
 })
 </script>

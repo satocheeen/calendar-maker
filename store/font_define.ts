@@ -11,6 +11,7 @@ export const WebFontNameList = [
     "Hachi Maru Pop",
     'Kaisei Decol',
     'Lato',
+    'Oxanium',
     'Patrick Hand',
     "Potta One",
     'Raleway',
@@ -18,4 +19,5 @@ export const WebFontNameList = [
     'Train One',
     'Zen Kaku Gothic New',
     'Zen Kurenaido',
+    'Zen Maru Gothic',
 ]
