@@ -1,12 +1,14 @@
 <template>
-    <CalendarViewLayout>
-        <template #calendar>
-            <YearCalendarPage :year="year" />
-        </template>
-        <template #sidebar>
-            <YearCalendarSettingPanel />
-        </template>
-    </CalendarViewLayout>
+    <ClientOnly>
+        <CalendarViewLayout>
+            <template #calendar>
+                <YearCalendarPage :year="year" />
+            </template>
+            <template #sidebar>
+                <YearCalendarSettingPanel />
+            </template>
+        </CalendarViewLayout>
+    </ClientOnly>
 </template>
 
 <script lang="ts">

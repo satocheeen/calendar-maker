@@ -37,9 +37,7 @@ export default defineComponent({
         });
 
         const calendarStyleDefine = computed(() => {
-            const year = props.day.day.getFullYear();
-            const month = props.day.day.getMonth() + 1;
-            return styleStore?.getCalendarStyleDefine(year, month).colors;
+            return styleStore?.currentMonthlyCalendarStyleDefine.value.colors;
         })
 
         const numberStyle = computed((): CSSProperties => {

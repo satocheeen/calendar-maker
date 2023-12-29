@@ -36,7 +36,7 @@ export default defineComponent({
         });
 
         const calendarStyleDefine = computed(() => {
-            return styleStore?.getCalendarStyleDefine(props.year, props.month);
+            return styleStore?.currentMonthlyCalendarStyleDefine.value;
         })
 
         const style = computed((): CSSProperties => {

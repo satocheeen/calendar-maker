@@ -16,8 +16,9 @@ import useOperation, { OperationStoreKey } from './store/useOperation';
 
 export default defineComponent({
     setup() {
-        provide(OperationStoreKey, useOperation());
-        provide(StyleStoreKey, useStyle());
+        const operationStore = useOperation();
+        provide(OperationStoreKey, operationStore);
+        provide(StyleStoreKey, useStyle( { operation: operationStore }));
         return {};
     },
     components: { MenuBar }
@@ -26,22 +27,22 @@ export default defineComponent({
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
 }
 // Vuetifyのデフォルトでoverflow-yになっているので、キャンセル
 html {
-  overflow: hidden !important;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+    overflow: hidden !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 html::-webkit-scrollbar {
-  width: 0;
-  height: 0;
+    width: 0;
+    height: 0;
 }
 </style>
 

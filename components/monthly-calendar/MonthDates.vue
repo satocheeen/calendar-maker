@@ -48,7 +48,7 @@ export default defineComponent({
         const dates = useDate(props);
 
         const weekdayLabelColor = computed(() => {
-            return styleStore?.getCalendarStyleDefine(props.year, props.month).colors.weekdayLabelTextColor;
+            return styleStore?.currentMonthlyCalendarStyleDefine.value.colors.weekdayLabelTextColor;
         });
 
         const weekdayLabelFontFamily = computed(() => {
@@ -60,7 +60,7 @@ export default defineComponent({
         })
 
         const weekdayLabelBackgroundColor = computed(() => {
-            return styleStore?.getCalendarStyleDefine(props.year, props.month).colors.weekdayLabelBackgroundColor;
+            return styleStore?.currentMonthlyCalendarStyleDefine.value.colors.weekdayLabelBackgroundColor;
 
         })
 

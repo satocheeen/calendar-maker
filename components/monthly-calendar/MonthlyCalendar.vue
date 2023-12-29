@@ -4,7 +4,7 @@
             <PageLayout orientation="landscape">
                 <div :class="[$style.innerPage, $style.odd]">
                     <CalendarHeader :year="year" :month="month" :class="$style.header" />
-                    <ImageBox :year="year" :month="month" />
+                    <ImageBox />
                 </div>
             </PageLayout>
             <PageLayout orientation="landscape">
@@ -17,7 +17,7 @@
             <PageLayout orientation="portrait" :class="$style.portrait">
                 <div :class="[$style.innerPage, $style.odd]">
                     <CalendarHeader :year="year" :month="month" :class="$style.header" />
-                    <ImageBox :year="year" :month="month" />
+                    <ImageBox/>
                 </div>
                 <div :class="[$style.innerPage, $style.even]">
                     <MonthDates :year="year" :month="month" />

@@ -18,7 +18,7 @@
                 <v-divider :class="$style.divider" />
                 <h3 :class="$style.subheader">月ごとの設定</h3>
                 <v-text-field label="画像URL" v-model="imagePath" />
-                <ColorSettingPanel :year-month="yearMonth" />
+                <ColorSettingPanel />
 
                 <v-divider :class="$style.divider" />
 
@@ -47,7 +47,6 @@ import YearSelect from '@/components/common/YearSelect.vue';
 import MonthSelect from '@/components/common/MonthSelect.vue';
 import PrintOutBtn from '@/components/common/PrintOutBtn.vue';
 import OrientationSelect from './OrientationSelect.vue';
-import { OperationStoreKey, type YearMonth } from '~/store/useOperation';
 
 export type TabKind = 'month' | 'year';
 export default defineComponent({
@@ -64,7 +63,6 @@ export default defineComponent({
         'update:tab': (val: TabKind) => true,
     },
     setup(props, { emit }) {
-        const operationStore = inject(OperationStoreKey);
         const styleStore = inject(StyleStoreKey);
         const currentTab = computed<TabKind>({
             get() {
@@ -75,13 +73,8 @@ export default defineComponent({
             }
         })
 
-        const yearMonth = computed<YearMonth>(() => {
-            return operationStore?.yearMonth.value ??
-                        { year: new Date().getFullYear(), month: 1 };
-        })
-
         const calendarStyleDefine = computed(() => {
-            return styleStore?.getCalendarStyleDefine(yearMonth.value.year, yearMonth.value.month);
+            return styleStore?.currentMonthlyCalendarStyleDefine.value;
         });
         const imagePath = computed({
             get() {
@@ -89,9 +82,7 @@ export default defineComponent({
             },
             set(val) {
                 if (!styleStore) return;
-                const year = yearMonth.value.year;
-                const month = yearMonth.value.month;
-                styleStore.setMonthlyCalendarSetting(year, month,  { imagePath: val});
+                styleStore.setCurrentMonthlyCalendarSetting({ imagePath: val});
             }
         });
 
@@ -99,7 +90,6 @@ export default defineComponent({
         return {
             currentTab,
             imagePath,
-            yearMonth,
         };
     },
 });

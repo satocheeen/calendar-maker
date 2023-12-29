@@ -2,8 +2,12 @@ import { type InjectionKey } from "vue";
 import type { FontDefine, MonthlyCalendarCommonDefine, MonthlyCalendarDefine, MonthlyColorDefine, Presets, YearlyCalendarStyleDefine } from "./types";
 import { defaultYearlyDefine, defaultMonthlyCalendarCommonDefine, defaultPresets } from "./defaults";
 import useLocalStorage from "./useLocalStorage";
+import type { OperationStore, YearMonth } from "./useOperation";
 
-export default function useStyle() {
+type Props = {
+    operation: OperationStore;
+}
+export default function useStyle(props: Props) {
     const monthlyDefine = useLocalStorage<{[yearMonth: string]: MonthlyCalendarDefine}>({
         key: 'monthlyDefine',
         default: {}
@@ -32,43 +36,46 @@ export default function useStyle() {
         return defaultPresets[defaultIndex];
     })
 
-    const setMonthlyCalendarSetting = (year: number, month: number, values: Partial<MonthlyCalendarDefine>) => {
-        const yearMonth = year + '-' + month;
-        monthlyDefine.value[yearMonth] = Object.assign({}, monthlyDefine.value[yearMonth], values);
+    const yearMonthKey = computed(() => {
+        return getYearMonthKeyStr(props.operation.yearMonth.value);
+    })
+
+    const setCurrentMonthlyCalendarSetting = (values: Partial<MonthlyCalendarDefine>) => {
+        monthlyDefine.value[yearMonthKey.value] = Object.assign({}, monthlyDefine.value[yearMonthKey.value], values);
     }
 
-    const getCalendarStyleDefine = (year: number, month: number) => {
-        const yearMonth = year + '-' + month;
-        const savedColors = (monthlyDefine.value[yearMonth] ?? {}).colors ?? {};
+    const currentMonthlyCalendarStyleDefine = computed(() => {
+        const savedColors = (monthlyDefine.value[yearMonthKey.value] ?? {}).colors ?? {};
         const colors = Object.assign({}, defaultPreset.value, savedColors);
-        const define = Object.assign({}, monthlyDefine.value[yearMonth] ?? {}, { colors });
+        const define = Object.assign({}, monthlyDefine.value[yearMonthKey.value] ?? {}, { colors });
         return define;
-    }
-
-    const setMonthlyCalendarColor = (year: number, month: number, key: keyof MonthlyColorDefine, color: string) => {
-        const yearMonth = year + '-' + month;
-        const currentColors = (monthlyDefine.value[yearMonth] ?? {}).colors ?? {};
+    })
+    
+    const setCurrentMonthlyCalendarColor = (key: keyof MonthlyColorDefine, color: string) => {
+        const currentColors = (monthlyDefine.value[yearMonthKey.value] ?? {}).colors ?? {};
         const newColors = Object.assign(currentColors, { [key]: color });
-        monthlyDefine.value[yearMonth] = Object.assign({}, monthlyDefine.value[yearMonth], {colors: newColors });
+        monthlyDefine.value[yearMonthKey.value] = Object.assign({}, monthlyDefine.value[yearMonthKey.value], {colors: newColors });
     }
 
     /**
-     * 指定の年月のカラーをデフォルト値に戻る
+     * 現在年月のカラーをデフォルト値に戻る
      * @param year 
      * @param month 
      */
-    const resetMonthlyCalendarColor = (year: number, month: number) => {
-        const yearMonth = year + '-' + month;
-        if (monthlyDefine.value[yearMonth]) {
-            monthlyDefine.value[yearMonth].colors = undefined;
+    const reseCurrenttMonthlyCalendarColor = () => {
+        if (monthlyDefine.value[yearMonthKey.value]) {
+            monthlyDefine.value[yearMonthKey.value].colors = undefined;
         }
     }
 
-    const isDefaultColor = (year: number, month: number) => {
-        const yearMonth = year + '-' + month;
-        const savedColors = (monthlyDefine.value[yearMonth] ?? {}).colors;
+    /**
+     * 現在年月のカラーがデフォルト値かどうかを返す
+     * @returns 
+     */
+    const isDefaultColorMonthlyCalendar = computed(() => {
+        const savedColors = (monthlyDefine.value[yearMonthKey.value] ?? {}).colors;
         return savedColors === undefined;
-    }
+    })
 
     /**
      * 指定のカラーセットをプリセット登録する
@@ -82,12 +89,11 @@ export default function useStyle() {
         presets.value.presets = presets.value.presets.filter((_, i) => i !== index);
     }
 
-    const setPreset = (year: number, month: number, preset: MonthlyColorDefine) => {
-        const yearMonth = year + '-' + month;
-        if (!monthlyDefine.value[yearMonth]) {
-            monthlyDefine.value[yearMonth] = { colors: preset }
+    const setPresetToCurrentMonthlyCalendar = (preset: MonthlyColorDefine) => {
+        if (!monthlyDefine.value[yearMonthKey.value]) {
+            monthlyDefine.value[yearMonthKey.value] = { colors: preset }
         } else {
-            monthlyDefine.value[yearMonth].colors = preset;
+            monthlyDefine.value[yearMonthKey.value].colors = preset;
         }
     }
 
@@ -160,22 +166,26 @@ export default function useStyle() {
 }
 
     return {
-        setMonthlyCalendarSetting,
-        getCalendarStyleDefine,
-        setMonthlyCalendarColor,
+        setCurrentMonthlyCalendarSetting,
+        currentMonthlyCalendarStyleDefine,
+        setCurrentMonthlyCalendarColor,
         presets,
         addPreset,
         removePreset,
-        setPreset,
+        setPresetToCurrentMonthlyCalendar,
         output,
         load,
         monthlyCommonDefine,
         updateFontFamily,
         updateFontSize,
         yearlyDefine,
-        resetMonthlyCalendarColor,
-        isDefaultColor,
+        reseCurrenttMonthlyCalendarColor,
+        isDefaultColorMonthlyCalendar,
     }
 }
 type StyleStore = ReturnType<typeof useStyle>;
 export const StyleStoreKey: InjectionKey<StyleStore> = Symbol('StyleStore');
+
+function getYearMonthKeyStr(yearMonth: YearMonth) {
+    return yearMonth.year + '-' + yearMonth.month;
+}

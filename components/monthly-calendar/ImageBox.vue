@@ -19,21 +19,11 @@ import { watch } from 'vue';
 
 export default defineComponent({
     name: 'ImageBox',
-    props: {
-        year: {
-            type: Number,
-            required: true,
-        },
-        month: {
-            type: Number,
-            required: true,
-        },
-    },
-    setup(props) {
+    setup() {
         const styleStore = inject(StyleStoreKey);
 
         const calendarStyleDefine = computed(() => {
-            return styleStore?.getCalendarStyleDefine(props.year, props.month);
+            return styleStore?.currentMonthlyCalendarStyleDefine.value;
         });
 
         const imagePath = computed(() => {
@@ -47,7 +37,7 @@ export default defineComponent({
         })
 
         const imageBorderColor = computed(() => {
-            return styleStore?.getCalendarStyleDefine(props.year, props.month).colors.imageBorderColor;
+            return styleStore?.currentMonthlyCalendarStyleDefine.value.colors.imageBorderColor;
         });
 
         let draging = false;
@@ -60,7 +50,7 @@ export default defineComponent({
 
         const handleMouseUp = () => {
             if (draging) {
-                styleStore?.setMonthlyCalendarSetting(props.year, props.month, { imageOffset: offset.value });
+                styleStore?.setCurrentMonthlyCalendarSetting({ imageOffset: offset.value });
             }
             draging = false;
         }

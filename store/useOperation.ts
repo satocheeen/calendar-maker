@@ -21,5 +21,5 @@ export default function useOperation() {
 
 }
 
-type OperationStore = ReturnType<typeof useOperation>;
+export type OperationStore = ReturnType<typeof useOperation>;
 export const OperationStoreKey: InjectionKey<OperationStore> = Symbol('OperationStore');

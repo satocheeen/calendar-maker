@@ -1,19 +1,21 @@
 <template>
-    <CalendarViewLayout>
-        <template #calendar>
-            <div id="calendar">
-                <template v-if="currentTab==='month'">
-                    <MonthlyCalendar :year="year" :month="month" />
-                </template>
-                <template v-else>
-                    <MonthlyCalendar :year="year" :month="n" v-for="n in 12" :key="n" />
-                </template>
-            </div>
-        </template>
-        <template #sidebar>
-            <SettingPanel v-model:tab="currentTab" />
-        </template>
-    </CalendarViewLayout>
+    <ClientOnly>
+        <CalendarViewLayout>
+            <template #calendar>
+                <div id="calendar">
+                    <template v-if="currentTab==='month'">
+                        <MonthlyCalendar :year="year" :month="month" />
+                    </template>
+                    <template v-else>
+                        <MonthlyCalendar :year="year" :month="n" v-for="n in 12" :key="n" />
+                    </template>
+                </div>
+            </template>
+            <template #sidebar>
+                <SettingPanel v-model:tab="currentTab" />
+            </template>
+        </CalendarViewLayout>
+    </ClientOnly>
 </template>
 
 <script lang="ts">

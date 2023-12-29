@@ -32,16 +32,12 @@ export default defineComponent({
             type: Array as PropType<ColorItem[]>,
             required: true,
         },
-        yearMonth: {
-            type: Object as PropType<YearMonth>,
-            required: true,
-        }
     },
     setup(props) {
         const styleStore = inject(StyleStoreKey);
 
         const calendarStyleDefine = computed(() => {
-            return styleStore?.getCalendarStyleDefine(props.yearMonth.year, props.yearMonth.month);
+            return styleStore?.currentMonthlyCalendarStyleDefine.value;
         });
 
         const myColors = computed(() => {
@@ -57,7 +53,7 @@ export default defineComponent({
         const handleChangeColor = (index: number, event: Event) => {
             const target = event.target as HTMLInputElement;
             const key = props.colors[index].defineKey;
-            styleStore?.setMonthlyCalendarColor(props.yearMonth.year, props.yearMonth.month, key, target.value);
+            styleStore?.setCurrentMonthlyCalendarColor(key, target.value);
         }
 
         return {
