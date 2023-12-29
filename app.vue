@@ -6,6 +6,7 @@
             <NuxtPage />
           </div>
       </v-main>
+      <WebFontLoader />
   </v-app>
 </template>
 
@@ -21,7 +22,10 @@ export default defineComponent({
         provide(StyleStoreKey, useStyle( { operation: operationStore }));
         return {};
     },
-    components: { MenuBar }
+    components: {
+        MenuBar,
+        [process.client ? 'WebFontLoader': '']: () => import('@/components/common/WebFontLoader.vue'),
+    }
 })
 </script>
 
