@@ -3,7 +3,7 @@
         <v-select
             :label="$props.label"
             :items="fonts"
-            v-model:model-value="currentValue"
+            v-model="currentValue"
         >
             <template v-slot:item="{ props, item }">
                 <v-list-item
@@ -28,21 +28,21 @@ export default defineComponent({
         label: {
             type: String,
         },
-        value: {
+        modelValue: {
             type: String,
         }
     },
     emits: {
         // eslint-disable-next-line
-        'update:value': (val: string|undefined) => true,
+        'update:modelValue': (val: string|undefined) => true,
     },
     setup(props, { emit }) {
         const currentValue = computed({
             get() {
-                return props.value;
+                return props.modelValue;
             },
             set(val) {
-                emit('update:value', val);
+                emit('update:modelValue', val);
             }
         })
 

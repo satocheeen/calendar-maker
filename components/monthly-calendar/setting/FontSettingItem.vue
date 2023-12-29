@@ -2,7 +2,7 @@
     <div :class="$style.row">
         <font-select
             :label="$props.label"
-            v-model:value="currentFontFamily"
+            v-model:model-value="currentFontFamily"
         />
         <v-slider
             label="Size"

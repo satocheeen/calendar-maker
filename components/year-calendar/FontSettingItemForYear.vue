@@ -6,7 +6,7 @@
                 <font-select
                     :class="$style.fontFamily"
                     label="フォント"
-                    v-model:model-value="currentFontFamily"
+                    v-model="currentFontFamily"
                 />
                 <v-slider
                     :class="$style.fontSize"
@@ -15,20 +15,20 @@
                     min="0.5"
                     max="5"
                     step=".1"
-                    v-model:model-value="currentFontSize"
+                    v-model="currentFontSize"
                 />
                 <v-text-field
                     type="color"
                     :label="$props.target==='day' ? '平日' : ''"
                     :class="$style.fontColor"
-                    v-model:model-value="currentFontColor"
+                    v-model="currentFontColor"
                 />
                 <v-text-field
                     v-if="$props.target==='day'"
                     type="color"
                     label="土日祝"
                     :class="$style.fontColor2"
-                    v-model:model-value="currentHolidayFontColor"
+                    v-model="currentHolidayFontColor"
                 />
             </div>
         </v-card-text>
