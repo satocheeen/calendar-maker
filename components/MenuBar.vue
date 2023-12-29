@@ -4,6 +4,7 @@
             <nav-link to="/">Top</nav-link>
             <nav-link to="/monthly">Monthly</nav-link>
             <nav-link to="/yearly">Yearly</nav-link>
+            <nav-link to="/cover">Cover</nav-link>
         </div>
         <div :class="$style.menu">
             <client-only>
@@ -12,7 +13,7 @@
                         <v-btn
                             v-bind="props"
                             variant="plain" color="secondary"
-                            icon="mdi-content-save"
+                            icon="mdi-download"
                             @click="onFileOutput"
                         />
                     </template>
@@ -22,7 +23,7 @@
                         <v-btn
                         v-bind="props"
                             variant="plain" color="secondary"
-                            icon="mdi-download"
+                            icon="mdi-upload"
                             @click="onFileReadClick"
                         />
                     </template>
