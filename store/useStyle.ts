@@ -3,14 +3,13 @@ import type { FontDefine, MonthlyCalendarCommonDefine, MonthlyCalendarDefine, Mo
 import { defaultYearlyDefine, defaultMonthlyCalendarCommonDefine, defaultPresets } from "./defaults";
 import useLocalStorage from "./useLocalStorage";
 import type { OperationStore, YearMonth } from "./useOperation";
-import merge from 'deepmerge';
 import deepmerge from "deepmerge";
 
 type Props = {
     operation: OperationStore;
 }
 export default function useStyle(props: Props) {
-    const monthlyDefine = useLocalStorage<{[yearMonth: string]: MonthlyCalendarDefine}>({
+    const userMonthlyDefine = useLocalStorage<{[yearMonth: string]: MonthlyCalendarDefine}>({
         key: 'monthlyDefine',
         default: {},
     })
@@ -19,6 +18,10 @@ export default function useStyle(props: Props) {
         key: 'monthlyCommonDefine',
         default: {},
     });
+    const monthlyCommonDefine = computed(() => {
+        const result = deepmerge(defaultMonthlyCalendarCommonDefine, userMonthlyCommonDefine.value);
+        return result;
+    })
 
     const presets = useLocalStorage<Presets>({
         key: 'presets',
@@ -28,9 +31,13 @@ export default function useStyle(props: Props) {
         },
     });
 
-    const yearlyDefine = useLocalStorage<YearlyCalendarStyleDefine>({
+    const userYearlyDefine = useLocalStorage<Partial<YearlyCalendarStyleDefine>>({
         key: 'yearlyDefine',
-        default: defaultYearlyDefine,
+        default: {},
+    })
+    const yearlyDefine = computed(() => {
+        const result = deepmerge(defaultYearlyDefine, userYearlyDefine.value);
+        return result;
     })
 
     const defaultPreset = computed(() => {
@@ -43,20 +50,20 @@ export default function useStyle(props: Props) {
     })
 
     const setCurrentMonthlyCalendarSetting = (values: Partial<MonthlyCalendarDefine>) => {
-        monthlyDefine.value[yearMonthKey.value] = Object.assign({}, monthlyDefine.value[yearMonthKey.value], values);
+        userMonthlyDefine.value[yearMonthKey.value] = Object.assign({}, userMonthlyDefine.value[yearMonthKey.value], values);
     }
 
     const currentMonthlyCalendarStyleDefine = computed(() => {
-        const savedColors = (monthlyDefine.value[yearMonthKey.value] ?? {}).colors ?? {};
+        const savedColors = (userMonthlyDefine.value[yearMonthKey.value] ?? {}).colors ?? {};
         const colors = Object.assign({}, defaultPreset.value, savedColors);
-        const define = Object.assign({}, monthlyDefine.value[yearMonthKey.value] ?? {}, { colors });
+        const define = Object.assign({}, userMonthlyDefine.value[yearMonthKey.value] ?? {}, { colors });
         return define;
     })
     
     const setCurrentMonthlyCalendarColor = (key: keyof MonthlyColorDefine, color: string) => {
-        const currentColors = (monthlyDefine.value[yearMonthKey.value] ?? {}).colors ?? {};
+        const currentColors = (userMonthlyDefine.value[yearMonthKey.value] ?? {}).colors ?? {};
         const newColors = Object.assign(currentColors, { [key]: color });
-        monthlyDefine.value[yearMonthKey.value] = Object.assign({}, monthlyDefine.value[yearMonthKey.value], {colors: newColors });
+        userMonthlyDefine.value[yearMonthKey.value] = Object.assign({}, userMonthlyDefine.value[yearMonthKey.value], {colors: newColors });
     }
 
     /**
@@ -65,8 +72,8 @@ export default function useStyle(props: Props) {
      * @param month 
      */
     const reseCurrenttMonthlyCalendarColor = () => {
-        if (monthlyDefine.value[yearMonthKey.value]) {
-            monthlyDefine.value[yearMonthKey.value].colors = undefined;
+        if (userMonthlyDefine.value[yearMonthKey.value]) {
+            userMonthlyDefine.value[yearMonthKey.value].colors = undefined;
         }
     }
 
@@ -75,7 +82,7 @@ export default function useStyle(props: Props) {
      * @returns 
      */
     const isDefaultColorMonthlyCalendar = computed(() => {
-        const savedColors = (monthlyDefine.value[yearMonthKey.value] ?? {}).colors;
+        const savedColors = (userMonthlyDefine.value[yearMonthKey.value] ?? {}).colors;
         return savedColors === undefined;
     })
 
@@ -92,17 +99,12 @@ export default function useStyle(props: Props) {
     }
 
     const setPresetToCurrentMonthlyCalendar = (preset: MonthlyColorDefine) => {
-        if (!monthlyDefine.value[yearMonthKey.value]) {
-            monthlyDefine.value[yearMonthKey.value] = { colors: preset }
+        if (!userMonthlyDefine.value[yearMonthKey.value]) {
+            userMonthlyDefine.value[yearMonthKey.value] = { colors: preset }
         } else {
-            monthlyDefine.value[yearMonthKey.value].colors = preset;
+            userMonthlyDefine.value[yearMonthKey.value].colors = preset;
         }
     }
-
-    const monthlyCommonDefine = computed(() => {
-        const result = deepmerge(defaultMonthlyCalendarCommonDefine, userMonthlyCommonDefine.value);
-        return result;
-    })
 
     const updateFontFamily = (target: keyof FontDefine, fontFamily: string|undefined) => {
         const newDef: Partial<MonthlyCalendarCommonDefine> =  { 
@@ -130,12 +132,16 @@ export default function useStyle(props: Props) {
         userMonthlyCommonDefine.value.orientation = orientation;
     }
 
+    const updateYearlyDefine = (value: Partial<YearlyCalendarStyleDefine>) => {
+        userYearlyDefine.value = deepmerge(userYearlyDefine.value, value);
+    }
+
     /**
      * 定義をファイル出力する
      */
     const output = () => {
         const json = {
-            monthlyDefine: monthlyDefine.value,
+            monthlyDefine: userMonthlyDefine.value,
             monthlyCommonDefine: userMonthlyCommonDefine.value,
             presets: presets.value,
             yearlyDefine: yearlyDefine.value,
@@ -174,16 +180,16 @@ export default function useStyle(props: Props) {
                 }
                 const json = JSON.parse(jsonStr);
                 if ('monthlyDefine' in json) {
-                    monthlyDefine.value = json.monthlyDefine;
+                    userMonthlyDefine.value = json.monthlyDefine;
                 }
                 if ('presets' in json) {
                     presets.value = json.presets;
                 }
                 if ('monthlyCommonDefine' in json) {
-                    monthlyCommonDefine.value = json.monthlyCommonDefine;
+                    userMonthlyCommonDefine.value = json.monthlyCommonDefine;
                 }
                 if ('yearlyDefine' in json) {
-                    yearlyDefine.value = json.yearlyDefine;
+                    userYearlyDefine.value = json.yearlyDefine;
                 }
             }
     
@@ -209,6 +215,7 @@ export default function useStyle(props: Props) {
         reseCurrenttMonthlyCalendarColor,
         isDefaultColorMonthlyCalendar,
         updateOrientation,
+        updateYearlyDefine,
     }
 }
 type StyleStore = ReturnType<typeof useStyle>;

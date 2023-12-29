@@ -33,7 +33,7 @@ export default defineComponent({
         })
 
         const fontSize = computed(() => {
-            return fontStyle.value?.fontSize;
+            return fontStyle.value?.fontSize + 'rem';
         })
 
         const color = computed(() => {

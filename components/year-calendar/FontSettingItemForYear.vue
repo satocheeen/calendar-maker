@@ -72,13 +72,13 @@ export default defineComponent({
             },
             set(val) {
                 if (!styleStore) return;
-                const target = styleStore.yearlyDefine.value.fonts[props.target];
-                if (!target) {
-                    styleStore.yearlyDefine.value.fonts[props.target] = { fontFamily: val };
-                }
-                else {
-                    target.fontFamily = val;
-                }
+                styleStore.updateYearlyDefine({
+                    fonts: {
+                        [props.target]: {
+                            fontFamily: val,
+                        },
+                    }
+                })
             }
         });
         const currentFontSize = computed({
@@ -88,13 +88,13 @@ export default defineComponent({
             set(val) {
                 if (!styleStore)
                     return;
-                const target = styleStore.yearlyDefine.value.fonts[props.target];
-                if (!target) {
-                    styleStore.yearlyDefine.value.fonts[props.target] = { fontSize: val };
-                }
-                else {
-                    target.fontSize = val;
-                }
+                styleStore.updateYearlyDefine({
+                    fonts: {
+                        [props.target]: {
+                            fontSize: val,
+                        },
+                    }
+                })
             }
         });
         const currentFontColor = computed({
@@ -104,13 +104,13 @@ export default defineComponent({
             set(val) {
                 if (!styleStore)
                     return;
-                const target = styleStore.yearlyDefine.value.fonts[props.target];
-                if (!target) {
-                    styleStore.yearlyDefine.value.fonts[props.target] = { color: val };
-                }
-                else {
-                    target.color = val;
-                }
+                styleStore.updateYearlyDefine({
+                    fonts: {
+                        [props.target]: {
+                            color: val,
+                        },
+                    }
+                })
             }
         });
         const currentHolidayFontColor = computed({
@@ -122,15 +122,14 @@ export default defineComponent({
             set(val) {
                 if (!styleStore)
                     return;
-                if (props.target !== 'day')
-                    return;
-                const target = styleStore.yearlyDefine.value.fonts[props.target];
-                if (!target) {
-                    styleStore.yearlyDefine.value.fonts[props.target] = { holidayColor: val };
-                }
-                else {
-                    target.holidayColor = val;
-                }
+
+                styleStore.updateYearlyDefine({
+                    fonts: {
+                        [props.target]: {
+                            holidayColor: val,
+                        },
+                    }
+                })
             }
         });
         return {

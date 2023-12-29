@@ -39,6 +39,10 @@ export const defaultYearlyDefine: YearlyCalendarStyleDefine = {
             color: '#808080',
             holidayColor: '#ac6c7b',
         },
+        coverTitle: {
+            fontSize: 2,
+            color: '#808080',
+        }
     },
     divider: {
         size: 30,
