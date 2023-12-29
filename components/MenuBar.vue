@@ -74,6 +74,7 @@ export default defineComponent({
     grid-template-columns: 1fr 1fr 1fr;
     width: 100vw;
     height: 100%;
+    overflow-x: auto;
 
     border-bottom: 1px solid #ddd;
     font-size: 16px;

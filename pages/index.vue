@@ -2,7 +2,10 @@
     <div :class="$style.container">
         <h1>Calendar Maker</h1>
         <p>
-            あなたオリジナルのカレンダーを作ります。
+            あなたオリジナルのカレンダーを。
+        </p>
+        <p>
+            ※PC上で動作させてください。
         </p>
 
         <h2>Monthly Calendar</h2>
@@ -30,18 +33,27 @@ export default defineComponent({
 
 <style lang="scss" module>
 .container {
-    margin-top: 3rem;
+    margin: auto;
+    padding: 3rem;
+    max-width: 50rem;
     text-align: center;
     font-family: 'Zen Maru Gothic';
     font-size: 16px;
     color: #333;
+}
+@media screen and (max-width:500px) {
+    .container {
+        padding: 0;
+        padding-top: 2rem;
+        max-width: unset;
+    }
 }
 
 h2 {
     margin: auto;
     margin-top: 5rem;
     border-bottom: 1px solid #ddd;
-    width: 20rem;
+    // max-width: 20rem;
 }
 
 p {
