@@ -47,6 +47,7 @@ export type YearlyCalendarStyleDefine = {
         year?: FontStyle;
         month?: FontStyle;
         day?: DayFontStyle;
+        coverTitle?: FontStyle;
     },
     divider: {
         size: number;

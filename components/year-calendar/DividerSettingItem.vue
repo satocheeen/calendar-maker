@@ -3,35 +3,39 @@
         <v-card-title>区切り線</v-card-title>
         <v-card-text>
             <div :class="$style.container">
-                <v-slider
-                    :class="$style.size"
-                    label="Size(%)"
-                    thumb-label="always"
-                    min="0"
-                    max="100"
-                    step="5"
-                    v-model:model-value="size"
-                />
-                <v-slider
-                    :class="$style.width"
-                    label="Width"
-                    thumb-label="always"
-                    min=".1"
-                    max="1"
-                    step=".1"
-                    v-model:model-value="width"
-                />
-                <v-text-field
-                    type="color"
-                    :class="$style.color"
-                    v-model:model-value="color"
-                />
-                <v-select
-                    label="線種"
-                    :items="['solid', 'double', 'dashed','dotted']"
-                    :class="$style.borderStyle"
-                    v-model:model-value="style"
-                />
+                <div :class="$style.size">
+                    <v-slider
+                        label="Size(%)"
+                        thumb-label="always"
+                        min="0"
+                        max="100"
+                        step="5"
+                        v-model:model-value="size"
+                    />
+                </div>
+                <div :class="$style.width">
+                    <v-slider
+                        label="Width"
+                        thumb-label="always"
+                        min=".1"
+                        max="1"
+                        step=".1"
+                        v-model:model-value="width"
+                    />
+                </div>
+                <div :class="$style.color">
+                    <v-text-field
+                        type="color"
+                        v-model:model-value="color"
+                    />
+                </div>
+                <div :class="$style.borderStyle">
+                    <v-select
+                        label="線種"
+                        :items="['solid', 'double', 'dashed','dotted']"
+                        v-model:model-value="style"
+                    />
+                </div>
             </div>
         </v-card-text>
     </v-card>
@@ -102,6 +106,11 @@ export default defineComponent({
 }
 .container {
     display: grid;
+    grid-template-columns: 2fr 1fr;
+
+    > * {
+        display: flex;
+    }
 
     .width {
         grid-column: 1 / 2;

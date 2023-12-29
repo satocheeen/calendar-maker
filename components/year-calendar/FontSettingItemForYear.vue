@@ -1,35 +1,39 @@
-<template>
+font<template>
     <v-card :class="$style.card">
         <v-card-title>{{ $props.label }}</v-card-title>
         <v-card-text>
             <div :class="$style.container">
-                <font-select
-                    :class="$style.fontFamily"
-                    label="フォント"
-                    v-model="currentFontFamily"
-                />
-                <v-slider
-                    :class="$style.fontSize"
-                    label="Size"
-                    thumb-label="always"
-                    min="0.5"
-                    max="5"
-                    step=".1"
-                    v-model="currentFontSize"
-                />
-                <v-text-field
-                    type="color"
-                    :label="$props.target==='day' ? '平日' : ''"
-                    :class="$style.fontColor"
-                    v-model="currentFontColor"
-                />
-                <v-text-field
-                    v-if="$props.target==='day'"
-                    type="color"
-                    label="土日祝"
-                    :class="$style.fontColor2"
-                    v-model="currentHolidayFontColor"
-                />
+                <div :class="$style.fontFamily">
+                    <font-select
+                        label="フォント"
+                        v-model="currentFontFamily"
+                    />
+                </div>
+                <div :class="$style.fontSize">
+                    <v-slider
+                        label="Size"
+                        thumb-label="always"
+                        min="0.5"
+                        max="5"
+                        step=".1"
+                        v-model="currentFontSize"
+                    />
+                </div>
+                <div :class="$style.fontColor">
+                    <v-text-field
+                        type="color"
+                        :label="$props.target==='day' ? '平日' : ''"
+                        v-model="currentFontColor"
+                    />
+                </div>
+                <div :class="$style.fontColor2">
+                    <v-text-field
+                        v-if="$props.target==='day'"
+                        type="color"
+                        label="土日祝"
+                        v-model="currentHolidayFontColor"
+                    />
+                </div>
             </div>
         </v-card-text>
     </v-card>
@@ -146,31 +150,30 @@ export default defineComponent({
 }
 .container {
     display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr 1fr;
+
+    > * {
+        display: flex;
+    }
 
     .fontFamily {
-       grid-column-start: 1;
-       grid-column-end: 3;
-       grid-row-start: 1;
-       grid-row-end: 2;
+        grid-column: 1 / 3;
+        grid-row: 1 / 2;
     }
 
     .fontSize {
-        grid-column-start: 1;
-        grid-column-end: 2;
-        grid-row-start: 2;
-        grid-row-end: 3;
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
     }
 
     .fontColor {
-        grid-column-start: 2;
-        grid-column-end: 3;
-        grid-row-start: 2;
-        grid-row-end: 3;
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
     }
 
     .fontColor2 {
-        grid-column-start: 2;
-        grid-column-end: 3;
+        grid-column: 2 / 3;
         grid-row-start: 3;
         grid-row-end: 4;
     }
