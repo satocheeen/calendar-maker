@@ -1,4 +1,4 @@
-import { MonthlyCalendarCommonDefine, MonthlyColorDefine, YearlyCalendarStyleDefine } from "./types";
+import type { MonthlyCalendarCommonDefine, MonthlyColorDefine, YearlyCalendarStyleDefine } from "./types";
 
 export const defaultMonthlyCalendarCommonDefine: MonthlyCalendarCommonDefine = {
     fonts: {

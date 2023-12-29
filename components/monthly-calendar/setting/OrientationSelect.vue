@@ -40,7 +40,7 @@ export default defineComponent({
             },
             set(val) {
                 if (!store) return;
-                store.monthlyCommonDefine.value.orientation = val;
+                store.updateOrientation(val);
             }
         })
         return {

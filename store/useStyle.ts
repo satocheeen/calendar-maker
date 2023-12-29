@@ -1,8 +1,10 @@
 import { type InjectionKey } from "vue";
-import type { FontDefine, MonthlyCalendarCommonDefine, MonthlyCalendarDefine, MonthlyColorDefine, Presets, YearlyCalendarStyleDefine } from "./types";
+import type { FontDefine, MonthlyCalendarCommonDefine, MonthlyCalendarDefine, MonthlyColorDefine, Orientation, Presets, YearlyCalendarStyleDefine } from "./types";
 import { defaultYearlyDefine, defaultMonthlyCalendarCommonDefine, defaultPresets } from "./defaults";
 import useLocalStorage from "./useLocalStorage";
 import type { OperationStore, YearMonth } from "./useOperation";
+import merge from 'deepmerge';
+import deepmerge from "deepmerge";
 
 type Props = {
     operation: OperationStore;
@@ -10,12 +12,12 @@ type Props = {
 export default function useStyle(props: Props) {
     const monthlyDefine = useLocalStorage<{[yearMonth: string]: MonthlyCalendarDefine}>({
         key: 'monthlyDefine',
-        default: {}
+        default: {},
     })
 
-    const monthlyCommonDefine = useLocalStorage<MonthlyCalendarCommonDefine>({
+    const userMonthlyCommonDefine = useLocalStorage<Partial<MonthlyCalendarCommonDefine>>({
         key: 'monthlyCommonDefine',
-        default: defaultMonthlyCalendarCommonDefine,
+        default: {},
     });
 
     const presets = useLocalStorage<Presets>({
@@ -23,7 +25,7 @@ export default function useStyle(props: Props) {
         default: {
             defaultIndex: 0,
             presets: defaultPresets,
-        }
+        },
     });
 
     const yearlyDefine = useLocalStorage<YearlyCalendarStyleDefine>({
@@ -97,12 +99,35 @@ export default function useStyle(props: Props) {
         }
     }
 
+    const monthlyCommonDefine = computed(() => {
+        const result = deepmerge(defaultMonthlyCalendarCommonDefine, userMonthlyCommonDefine.value);
+        return result;
+    })
+
     const updateFontFamily = (target: keyof FontDefine, fontFamily: string|undefined) => {
-        monthlyCommonDefine.value.fonts[target] = Object.assign({}, monthlyCommonDefine.value.fonts[target], { fontFamily });
+        const newDef: Partial<MonthlyCalendarCommonDefine> =  { 
+            fonts: {
+                [target]: {
+                    fontFamily,
+                }
+            }
+        };
+        userMonthlyCommonDefine.value  = deepmerge(userMonthlyCommonDefine.value, newDef);
     }
 
     const updateFontSize = (target: keyof FontDefine, fontSize: number|undefined) => {
-        monthlyCommonDefine.value.fonts[target] = Object.assign({}, monthlyCommonDefine.value.fonts[target], { fontSize });
+        const newDef: Partial<MonthlyCalendarCommonDefine> =  { 
+            fonts: {
+                [target]: {
+                    fontSize,
+                }
+            }
+        };
+        userMonthlyCommonDefine.value  = deepmerge(userMonthlyCommonDefine.value, newDef);
+    }
+
+    const updateOrientation= (orientation: Orientation) => {
+        userMonthlyCommonDefine.value.orientation = orientation;
     }
 
     /**
@@ -111,7 +136,9 @@ export default function useStyle(props: Props) {
     const output = () => {
         const json = {
             monthlyDefine: monthlyDefine.value,
+            monthlyCommonDefine: userMonthlyCommonDefine.value,
             presets: presets.value,
+            yearlyDefine: yearlyDefine.value,
         };
         const blob = new Blob([JSON.stringify(json)], {type:"application/json"});
         const link = document.createElement('a');
@@ -181,6 +208,7 @@ export default function useStyle(props: Props) {
         yearlyDefine,
         reseCurrenttMonthlyCalendarColor,
         isDefaultColorMonthlyCalendar,
+        updateOrientation,
     }
 }
 type StyleStore = ReturnType<typeof useStyle>;

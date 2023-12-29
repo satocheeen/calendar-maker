@@ -1,10 +1,10 @@
 <template>
     <PrintOutBtn />
 
-    <YearSelect />
-    <v-divider :class="$style.divider" />
-
     <v-container fluid>
+        <YearSelect />
+        <v-divider :class="$style.divider" />
+
         <FontSettingItemForYear
             label="フォント"
             target="coverTitle"
