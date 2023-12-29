@@ -13,14 +13,12 @@
                         <v-btn flat color="primary" v-bind="props" @click="onSaveToPreset">プリセット保存</v-btn>
                     </template>
                 </v-tooltip>
-            </ClientOnly>
 
-            <ClientOnly>
                 <v-menu
                     :close-on-content-click="false"
                 >
                     <template v-slot:activator="{ props }">
-                        <v-tooltip activator="" text="保存済みのカラーセットを読み込みます">
+                        <v-tooltip text="保存済みのカラーセットを読み込みます">
                             <template v-slot:activator="{ props: props2 }">
                                 <v-btn flat color="primary" v-bind="{...props, ...props2}"
                                 >
@@ -33,6 +31,13 @@
                         @select="setPreset" @delete="removePreset" /> 
 
                 </v-menu>
+            </ClientOnly>
+        </v-card-actions>
+        <v-card-actions>
+            <ClientOnly>
+                <v-btn flat color="primary" @click="toDefaultColors" :disabled="isDefaultColors">
+                    デフォルト色に戻す
+                </v-btn>
             </ClientOnly>
         </v-card-actions>
         <v-card-text>
@@ -173,6 +178,22 @@ export default defineComponent({
             styleStore?.removePreset(index);
         }
 
+        /**
+         * デフォルト色に戻す
+         */
+        const toDefaultColors = () => {
+            if (!styleStore) return;
+
+            const yearMonth = styleStore.yearMonth.value;
+            styleStore.resetMonthlyCalendarColor(yearMonth.year, yearMonth.month);
+        }
+
+        const isDefaultColors = computed(() => {
+            if (!styleStore) return true;
+            const yearMonth = styleStore.yearMonth.value;
+            return styleStore.isDefaultColor(yearMonth.year, yearMonth.month);
+        })
+
         return {
             onSaveToPreset,
             isShowPresetSelector,
@@ -182,6 +203,8 @@ export default defineComponent({
             onAreaClick,
             savePresetTooltip,
             resetPresetSavedFlag,
+            toDefaultColors,
+            isDefaultColors,
         };
     }
 });

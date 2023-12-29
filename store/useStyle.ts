@@ -48,7 +48,7 @@ export default function useStyle() {
     const getCalendarStyleDefine = (year: number, month: number) => {
         const yearMonth = year + '-' + month;
         const savedColors = (monthlyDefine.value[yearMonth] ?? {}).colors ?? {};
-        const colors = Object.assign(defaultPreset.value, savedColors);
+        const colors = Object.assign({}, defaultPreset.value, savedColors);
         const define = Object.assign({}, monthlyDefine.value[yearMonth] ?? {}, { colors });
         return define;
     }
@@ -58,6 +58,24 @@ export default function useStyle() {
         const currentColors = (monthlyDefine.value[yearMonth] ?? {}).colors ?? {};
         const newColors = Object.assign(currentColors, { [key]: color });
         monthlyDefine.value[yearMonth] = Object.assign({}, monthlyDefine.value[yearMonth], {colors: newColors });
+    }
+
+    /**
+     * 指定の年月のカラーをデフォルト値に戻る
+     * @param year 
+     * @param month 
+     */
+    const resetMonthlyCalendarColor = (year: number, month: number) => {
+        const yearMonth = year + '-' + month;
+        if (monthlyDefine.value[yearMonth]) {
+            monthlyDefine.value[yearMonth].colors = undefined;
+        }
+    }
+
+    const isDefaultColor = (year: number, month: number) => {
+        const yearMonth = year + '-' + month;
+        const savedColors = (monthlyDefine.value[yearMonth] ?? {}).colors;
+        return savedColors === undefined;
     }
 
     /**
@@ -164,6 +182,8 @@ export default function useStyle() {
         updateFontFamily,
         updateFontSize,
         yearlyDefine,
+        resetMonthlyCalendarColor,
+        isDefaultColor,
     }
 }
 type StyleStore = ReturnType<typeof useStyle>;

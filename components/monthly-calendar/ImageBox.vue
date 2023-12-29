@@ -42,7 +42,8 @@ export default defineComponent({
         });
 
         const hasImage = computed(() => {
-            return calendarStyleDefine.value?.imagePath !== undefined;
+            if (calendarStyleDefine.value?.imagePath === undefined) return false;
+            return calendarStyleDefine.value.imagePath.length > 0;
         })
 
         const imageBorderColor = computed(() => {

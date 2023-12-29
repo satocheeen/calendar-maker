@@ -22,7 +22,7 @@ export type MonthlyColorDefine = {
  * Monthly Calendarの定義（月ごと）
  */
 export type MonthlyCalendarDefine = {
-    colors: MonthlyColorDefine;
+    colors?: MonthlyColorDefine;
     imagePath?: string;
     imageOffset?: {
         x: number;
