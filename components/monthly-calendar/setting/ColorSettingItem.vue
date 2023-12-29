@@ -13,7 +13,9 @@
 <script lang="ts">
 import { type MonthlyColorDefine } from '@/store/types';
 import { StyleStoreKey } from '@/store/useStyle';
+import type { PropType } from 'vue';
 import { computed, defineComponent, inject } from 'vue';
+import type { YearMonth } from '~/store/useOperation';
 
 type ColorItem = {
     defineKey: keyof MonthlyColorDefine;
@@ -30,21 +32,16 @@ export default defineComponent({
             type: Array as PropType<ColorItem[]>,
             required: true,
         },
+        yearMonth: {
+            type: Object as PropType<YearMonth>,
+            required: true,
+        }
     },
     setup(props) {
         const styleStore = inject(StyleStoreKey);
 
-        const yearMonth = computed(() => {
-            const year = styleStore?.yearMonth.value.year ?? new Date().getFullYear();
-            const month = styleStore?.yearMonth.value.month ?? 1;
-            return {
-                year,
-                month,
-            }
-        })
-
         const calendarStyleDefine = computed(() => {
-            return styleStore?.getCalendarStyleDefine(yearMonth.value.year, yearMonth.value.month);
+            return styleStore?.getCalendarStyleDefine(props.yearMonth.year, props.yearMonth.month);
         });
 
         const myColors = computed(() => {
@@ -60,7 +57,7 @@ export default defineComponent({
         const handleChangeColor = (index: number, event: Event) => {
             const target = event.target as HTMLInputElement;
             const key = props.colors[index].defineKey;
-            styleStore?.setMonthlyCalendarColor(yearMonth.value.year, yearMonth.value.month, key, target.value);
+            styleStore?.setMonthlyCalendarColor(props.yearMonth.year, props.yearMonth.month, key, target.value);
         }
 
         return {

@@ -3,22 +3,22 @@
 </template>
 
 <script lang="ts">
-import { StyleStoreKey } from '@/store/useStyle';
 import { computed } from 'vue';
 import { defineComponent, inject } from 'vue';
+import { OperationStoreKey } from '~/store/useOperation';
 
 export default defineComponent({
     name: 'MonthSelect',
     setup() {
-        const styleStore = inject(StyleStoreKey);
+        const operationStore = inject(OperationStoreKey);
 
         const currentValue = computed({
             get: () => {
-                return styleStore?.yearMonth.value.month ?? 1;
+                return operationStore?.yearMonth.value.month ?? 1;
             },
             set: (val) => {
-                if (!styleStore) return;
-                styleStore.yearMonth.value.month = Number(val);
+                if (!operationStore) return;
+                operationStore.yearMonth.value.month = Number(val);
             }
         });
 

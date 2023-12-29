@@ -42,12 +42,14 @@
         </v-card-actions>
         <v-card-text>
             <ColorSettingItem
+                :year-month="$props.yearMonth"
                 label="画像罫線"
                 :colors="[{
                     defineKey: 'imageBorderColor'
                 }]"
             />
             <ColorSettingItem
+                :year-month="$props.yearMonth"
                 label="年月"
                 :colors="[{
                     defineKey: 'yearMonthTextColor',
@@ -55,6 +57,7 @@
                 }]"
             />
             <ColorSettingItem
+                :year-month="$props.yearMonth"
                 label="平日"
                 :colors="[{
                     defineKey: 'weekdayTextColor',
@@ -65,6 +68,7 @@
                 }]"
             />
             <ColorSettingItem
+                :year-month="$props.yearMonth"
                 label="土日祝"
                 :colors="[{
                     defineKey: 'holidayTextColor',
@@ -75,6 +79,7 @@
                 }]"
             />
             <ColorSettingItem
+                :year-month="$props.yearMonth"
                 label="前月・翌月"
                 :colors="[{
                     defineKey: 'anotherMonthsDayTextColor',
@@ -82,6 +87,7 @@
                 }]"
             />
             <ColorSettingItem
+                :year-month="$props.yearMonth"
                 label="祝日・イベント名"
                 :colors="[{
                     defineKey: 'eventNameTextColor',
@@ -89,6 +95,7 @@
                 }]"
             />
             <ColorSettingItem
+                :year-month="$props.yearMonth"
                 label="曜日ラベル"
                 :colors="[{
                     defineKey: 'weekdayLabelTextColor',
@@ -99,6 +106,7 @@
                 }]"
             />
             <ColorSettingItem
+                :year-month="$props.yearMonth"
                 label="罫線"
                 :colors="[{
                     defineKey: 'borderColor',
@@ -115,11 +123,19 @@ import { onMounted, onUnmounted } from 'vue';
 import { ref, defineComponent, inject } from 'vue';
 import PresetSelector from './PresetSelector.vue';
 import ColorSettingItem from './ColorSettingItem.vue';
+import { type YearMonth } from '~/store/useOperation';
+import type { PropType } from 'vue';
 
 export default defineComponent({
     name: 'ColorSettingPanel',
     components: { PresetSelector, ColorSettingItem },
-    setup() {
+    props: {
+        yearMonth: {
+            type: Object as PropType<YearMonth>,
+            required: true,
+        }
+    },
+    setup(props) {
         const isShowPresetSelector = ref(false);
 
         const onAreaClick = () => {
@@ -155,7 +171,7 @@ export default defineComponent({
 
         const onSaveToPreset = () => {
             if (!styleStore) return;
-            const yearMonth = styleStore.yearMonth.value;
+            const yearMonth = props.yearMonth;
             const currentColors = styleStore.getCalendarStyleDefine(yearMonth.year, yearMonth.month).colors;
             styleStore.addPreset(currentColors);
             savedFlag.value = true;
@@ -170,7 +186,7 @@ export default defineComponent({
          */
         const setPreset = (preset: MonthlyColorDefine) => {
             if (!styleStore) return;
-            styleStore.setPreset(styleStore.yearMonth.value.year, styleStore.yearMonth.value.month, preset);
+            styleStore.setPreset(props.yearMonth.year, props.yearMonth.month, preset);
             isShowPresetSelector.value = false;
         }
 
@@ -184,13 +200,13 @@ export default defineComponent({
         const toDefaultColors = () => {
             if (!styleStore) return;
 
-            const yearMonth = styleStore.yearMonth.value;
+            const yearMonth = props.yearMonth;
             styleStore.resetMonthlyCalendarColor(yearMonth.year, yearMonth.month);
         }
 
         const isDefaultColors = computed(() => {
             if (!styleStore) return true;
-            const yearMonth = styleStore.yearMonth.value;
+            const yearMonth = props.yearMonth;
             return styleStore.isDefaultColor(yearMonth.year, yearMonth.month);
         })
 

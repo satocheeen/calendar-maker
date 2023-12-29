@@ -18,7 +18,7 @@
                 <v-divider :class="$style.divider" />
                 <h3 :class="$style.subheader">月ごとの設定</h3>
                 <v-text-field label="画像URL" v-model="imagePath" />
-                <ColorSettingPanel />
+                <ColorSettingPanel :year-month="yearMonth" />
 
                 <v-divider :class="$style.divider" />
 
@@ -47,6 +47,7 @@ import YearSelect from '@/components/common/YearSelect.vue';
 import MonthSelect from '@/components/common/MonthSelect.vue';
 import PrintOutBtn from '@/components/common/PrintOutBtn.vue';
 import OrientationSelect from './OrientationSelect.vue';
+import { OperationStoreKey, type YearMonth } from '~/store/useOperation';
 
 export type TabKind = 'month' | 'year';
 export default defineComponent({
@@ -63,6 +64,7 @@ export default defineComponent({
         'update:tab': (val: TabKind) => true,
     },
     setup(props, { emit }) {
+        const operationStore = inject(OperationStoreKey);
         const styleStore = inject(StyleStoreKey);
         const currentTab = computed<TabKind>({
             get() {
@@ -73,11 +75,13 @@ export default defineComponent({
             }
         })
 
-        const calendarStyleDefine = computed(() => {
-            const year = styleStore?.yearMonth.value.year ?? new Date().getFullYear();
-            const month = styleStore?.yearMonth.value.month ?? 1;
+        const yearMonth = computed<YearMonth>(() => {
+            return operationStore?.yearMonth.value ??
+                        { year: new Date().getFullYear(), month: 1 };
+        })
 
-            return styleStore?.getCalendarStyleDefine(year, month);
+        const calendarStyleDefine = computed(() => {
+            return styleStore?.getCalendarStyleDefine(yearMonth.value.year, yearMonth.value.month);
         });
         const imagePath = computed({
             get() {
@@ -85,8 +89,8 @@ export default defineComponent({
             },
             set(val) {
                 if (!styleStore) return;
-                const year = styleStore.yearMonth.value.year;
-                const month = styleStore.yearMonth.value.month;
+                const year = yearMonth.value.year;
+                const month = yearMonth.value.month;
                 styleStore.setMonthlyCalendarSetting(year, month,  { imagePath: val});
             }
         });
@@ -95,6 +99,7 @@ export default defineComponent({
         return {
             currentTab,
             imagePath,
+            yearMonth,
         };
     },
 });

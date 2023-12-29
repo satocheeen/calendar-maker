@@ -11,24 +11,24 @@
 
 <script lang="ts">
 import CalendarViewLayout from '@/components/common/CalendarViewLayout.vue';
-import { StyleStoreKey } from '@/store/useStyle';
 import { defineComponent, computed, inject } from 'vue';
 import YearCalendarPage from '@/components/year-calendar/YearCalendarPages.vue';
 import YearCalendarSettingPanel from '@/components/year-calendar/YearCalendarSettingPanel.vue';
+import { OperationStoreKey } from '~/store/useOperation';
 
 export default defineComponent({
     name: 'YearCalendarView',
     components: { CalendarViewLayout, YearCalendarPage, YearCalendarSettingPanel },
     setup() {
-        const styleStore = inject(StyleStoreKey);
+        const operationStore = inject(OperationStoreKey);
         const year = computed({
             get: () => {
-                return styleStore?.yearMonth.value.year ?? 0;
+                return operationStore?.yearMonth.value.year ?? 0;
             },
             set: (val) => {
-                if (!styleStore?.yearMonth.value)
+                if (!operationStore?.yearMonth.value)
                     return;
-                styleStore.yearMonth.value.year = val;
+                operationStore.yearMonth.value.year = val;
             }
         });
         return {

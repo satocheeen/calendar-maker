@@ -19,25 +19,25 @@
 <script lang="ts">
 import MonthlyCalendar from '@/components/monthly-calendar/MonthlyCalendar.vue';
 import SettingPanel, { type TabKind } from '@/components/monthly-calendar/setting/SettingPanel.vue';
-import { StyleStoreKey } from '@/store/useStyle';
 import { computed, ref } from 'vue';
 import { inject } from 'vue';
 import { defineComponent } from 'vue';
 import CalendarViewLayout from '@/components/common/CalendarViewLayout.vue';
+import { OperationStoreKey } from '~/store/useOperation';
 
 export default defineComponent({
     components: { MonthlyCalendar, SettingPanel, CalendarViewLayout },
     name: 'CalendarView',
     setup() {
             const currentTab = ref<TabKind>('month');
-            const styleStore = inject(StyleStoreKey);
+            const operationStore = inject(OperationStoreKey);
 
         const year = computed(() => {
-            return styleStore?.yearMonth.value.year ?? new Date().getFullYear();
+            return operationStore?.yearMonth.value.year ?? new Date().getFullYear();
         })
 
         const month = computed(() => {
-            return styleStore?.yearMonth.value.month ?? 1;
+            return operationStore?.yearMonth.value.month ?? 1;
         })
 
         return {

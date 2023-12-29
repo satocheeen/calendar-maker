@@ -1,17 +1,9 @@
-import { type InjectionKey, ref, watch } from "vue";
+import { type InjectionKey } from "vue";
 import type { FontDefine, MonthlyCalendarCommonDefine, MonthlyCalendarDefine, MonthlyColorDefine, Presets, YearlyCalendarStyleDefine } from "./types";
 import { defaultYearlyDefine, defaultMonthlyCalendarCommonDefine, defaultPresets } from "./defaults";
+import useLocalStorage from "./useLocalStorage";
 
 export default function useStyle() {
-    // 表示中の年月（設定ファイルの入出力対象外）
-    const yearMonth = useLocalStorage<{year: number; month: number}>({
-        key: 'yearMonth',
-        default: {
-            year: new Date().getFullYear(),
-            month: 1,
-        }
-    });
-
     const monthlyDefine = useLocalStorage<{[yearMonth: string]: MonthlyCalendarDefine}>({
         key: 'monthlyDefine',
         default: {}
@@ -168,7 +160,6 @@ export default function useStyle() {
 }
 
     return {
-        yearMonth,
         setMonthlyCalendarSetting,
         getCalendarStyleDefine,
         setMonthlyCalendarColor,
@@ -188,29 +179,3 @@ export default function useStyle() {
 }
 type StyleStore = ReturnType<typeof useStyle>;
 export const StyleStoreKey: InjectionKey<StyleStore> = Symbol('StyleStore');
-
-
-/**
- * LocalStorageと同期する値を管理するフック
- * @param props 
- * @returns 
- */
-type LocalStorageHookProps<T> = {
-    key: string;    // LocalStorageに格納するキー
-    default: T;     // 初期値
-}
-function useLocalStorage<T>(props: LocalStorageHookProps<T>) {
-    const value = ref<T>(props.default);
-
-    if (process.client) {
-        const valueStr = localStorage.getItem(props.key);
-        value.value = valueStr ? JSON.parse(valueStr) : props.default;
-    }
-    watch(() => value.value, (val) => {
-        if (process.client) {
-            localStorage.setItem(props.key, JSON.stringify(val));
-        }
-    }, { deep: true, immediate: true });
-
-    return value;
-}

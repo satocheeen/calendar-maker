@@ -12,8 +12,11 @@
 <script lang="ts">
 import MenuBar from './components/MenuBar.vue';
 import useStyle, { StyleStoreKey } from './store/useStyle';
+import useOperation, { OperationStoreKey } from './store/useOperation';
+
 export default defineComponent({
     setup() {
+        provide(OperationStoreKey, useOperation());
         provide(StyleStoreKey, useStyle());
         return {};
     },
