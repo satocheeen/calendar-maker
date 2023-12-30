@@ -1,11 +1,14 @@
 import { type InjectionKey } from "vue";
 import useLocalStorage from "./useLocalStorage";
+import { useMediaQuery } from '@vueuse/core'
 
 export type YearMonth = {
     year: number;
     month: number;
 }
 export default function useOperation() {
+    const isSp = useMediaQuery('(max-width: 500px)')
+
     // 表示中の年月
     const yearMonth = useLocalStorage<YearMonth>({
         key: 'yearMonth',
@@ -17,6 +20,7 @@ export default function useOperation() {
 
     return {
         yearMonth,
+        isSp: isSp.value,
     }
 
 }

@@ -1,36 +1,67 @@
 <template>
-    <div :class="$style.menuBar">
-        <div :class="$style.nav">
-            <nav-link to="/">Top</nav-link>
-            <nav-link to="/monthly">Monthly</nav-link>
-            <nav-link to="/yearly">Yearly</nav-link>
-            <nav-link to="/cover">Cover</nav-link>
-        </div>
-        <div :class="$style.menu" v-if="showMenu">
+    <v-app-bar :elevation="1" absolute>
+        <template v-slot:prepend v-if="isSp">
+            <v-app-bar-nav-icon @click.stop="showDrawer = !showDrawer"></v-app-bar-nav-icon>
+        </template>
+
+        <v-app-bar-title>Calendar Maker</v-app-bar-title>
+
+        <template v-if="!isSp">
+            <v-list-item to="/">Top</v-list-item>
+            <v-list-item to="/monthly">Monthly</v-list-item>
+            <v-list-item to="/yearly">Yearly</v-list-item>
+            <v-list-item to="/cover">Cover</v-list-item>
+
+            <v-divider inset vertical></v-divider>
+
             <client-only>
-                <v-tooltip activator="" text="設定出力">
+                <v-tooltip text="設定読込">
                     <template v-slot:activator="{ props }">
-                        <v-btn
-                            v-bind="props"
-                            variant="plain" color="secondary"
-                            icon="mdi-download"
-                            @click="onFileOutput"
-                        />
+                        <v-btn icon @click="onFileReadClick" v-bind="props">
+                            <v-icon>mdi-upload</v-icon>
+                        </v-btn>
                     </template>
                 </v-tooltip>
-                <v-tooltip activator="" text="設定読込">
+
+                <v-tooltip text="設定出力">
                     <template v-slot:activator="{ props }">
-                        <v-btn
-                        v-bind="props"
-                            variant="plain" color="secondary"
-                            icon="mdi-upload"
-                            @click="onFileReadClick"
-                        />
+                        <v-btn icon @click="onFileOutput" v-bind="props">
+                            <v-icon>mdi-download</v-icon>
+                        </v-btn>
                     </template>
                 </v-tooltip>
             </client-only>
-        </div>
-    </div>    
+        </template>
+
+    </v-app-bar>
+
+    <v-navigation-drawer
+        location="left"
+        v-model="showDrawer"
+        v-if="isSp"
+    >
+        <v-list-item to="/">Top</v-list-item>
+        <v-list-item to="/monthly">Monthly</v-list-item>
+        <v-list-item to="/yearly">Yearly</v-list-item>
+        <v-list-item to="/cover">Cover</v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list-item @click="onFileReadClick">
+            設定読込
+            <template v-slot:append>
+                <v-icon icon="mdi-upload"></v-icon>
+            </template>
+        </v-list-item>
+
+        <v-list-item @click="onFileOutput">
+            設定出力
+            <template v-slot:append>
+                <v-icon icon="mdi-download"></v-icon>
+            </template>
+        </v-list-item>
+
+    </v-navigation-drawer>
 </template>
 
 <script lang="ts">
@@ -38,12 +69,16 @@ import { defineComponent, inject } from 'vue';
 import NavLink from './common/NavLink.vue';
 import { StyleStoreKey } from '../store/useStyle';
 import { useRoute } from 'vue-router';
+import { OperationStoreKey } from '@/store/useOperation';
 
 export default defineComponent({
     name: 'MenuBar',
     components: { NavLink },
     setup() {
+        const showDrawer = ref(false);
         const styleStore = inject(StyleStoreKey);
+        const operationStore = inject(OperationStoreKey);
+        const isSp = computed(() => operationStore?.isSp);
 
         const route = useRoute();
         const showMenu = computed(() => {
@@ -59,6 +94,8 @@ export default defineComponent({
         }
 
         return {
+            isSp,
+            showDrawer,
             onFileOutput,
             onFileReadClick,
             showMenu,
@@ -67,30 +104,3 @@ export default defineComponent({
     }
 });
 </script>
-
-<style lang="scss" module>
-.menuBar {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    width: 100vw;
-    height: 100%;
-    overflow-x: auto;
-
-    border-bottom: 1px solid #ddd;
-    font-size: 16px;
-}
-.nav {
-    grid-column: 2 / 3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-.menu {
-    grid-column: 3 / 4;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding-right: 10px;
-}
-</style>

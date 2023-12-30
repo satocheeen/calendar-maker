@@ -1,7 +1,9 @@
 <template>
-    <v-app>
-        <v-main :class="$style.container">
-            <menu-bar :class="$style.menu" />
+    <v-app full-height>
+        <div :class="$style.menu">
+            <menu-bar />
+        </div>
+        <v-main>
             <div :class="$style.main">
                 <NuxtPage />
             </div>
@@ -34,21 +36,16 @@ export default defineComponent({
         })
 
         const operationStore = useOperation();
+
         provide(OperationStoreKey, operationStore);
         provide(StyleStoreKey, useStyle( { operation: operationStore }));
-        return {};
+        return {
+        };
     },
 })
 </script>
 
 <style lang="scss">
-#app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-}
 // Vuetifyのデフォルトでoverflow-yになっているので、キャンセル
 html {
     overflow: hidden !important;
@@ -68,21 +65,21 @@ html::-webkit-scrollbar {
 </style>
 
 <style lang="scss" module>
-.container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
 .main {
     flex: 1;
-    height: calc(100vh - 50px);
-}
-.menu {
-    height: 50px;
+    height: calc(100vh - 90px);  // SP->56px, 48px
 }
 @media print {
     .menu {
       display: none;
+    }
+
+    .main {
+        padding: 0;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
     }
 }
 

@@ -1,5 +1,5 @@
 <template>
-    <div :class="$style.page" ref="pageRef">
+    <div :class="[$style.page, 'calendar-page']" ref="pageRef">
         <slot />
     </div>
 </template>
@@ -43,7 +43,7 @@ export default defineComponent({
             const fontNum = 60;
 
             style.innerHTML = `
-                html {
+                html .calendar-page {
                     font-size: calc(${rect.width}px / ${fontNum}) !important;
                 }
 
