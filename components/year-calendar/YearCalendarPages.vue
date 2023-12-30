@@ -84,6 +84,6 @@ export default defineComponent({
     border-top-width: v-bind(dividerWidth);
     border-color: v-bind(dividerColor);
     border-style: v-bind(dividerStyle);
-    margin: 2rem;
+    margin: 1.2rem;
 }
 </style>

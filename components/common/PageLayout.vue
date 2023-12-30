@@ -1,5 +1,5 @@
 <template>
-    <div :class="$style.page">
+    <div :class="$style.page" ref="pageRef">
         <slot />
     </div>
 </template>
@@ -19,6 +19,7 @@ export default defineComponent({
         }
     },
     setup(props) {
+        const pageRef = ref<HTMLDivElement>();
         const aspectRatio = computed(() => {
             if (props.orientation === 'portrait') {
                 return '595 /842';
@@ -28,22 +29,26 @@ export default defineComponent({
         })
 
         const styleElement = ref<HTMLElement|null>(null);
-        watch(() => props.orientation, (val) => {
+
+        const setupPage = () => {
             if (!process.client) return;
+            if (!pageRef.value) return;
+            const rect = pageRef.value.getBoundingClientRect();
+
             if (styleElement.value) {
                 document.head.removeChild(styleElement.value);
             }
             const style = document.createElement('style');
-            const widthPt = val === 'landscape' ? 842 : 595;
+            const widthPt = props.orientation === 'landscape' ? 842 : 595;
             const fontNum = 60;
 
             style.innerHTML = `
                 html {
-                    font-size: calc((100vw - 420px) / ${fontNum}) !important;
+                    font-size: calc(${rect.width}px / ${fontNum}) !important;
                 }
 
                 @media print {
-                    @page {size: A4 ${val}}
+                    @page {size: A4 ${props.orientation}}
                     html {
                         font-size: calc(${widthPt}pt / ${fontNum}) !important;
                     }
@@ -52,10 +57,26 @@ export default defineComponent({
             document.head.appendChild(style);
 
             styleElement.value = style;
+            console.log('style', style);
+        }
 
-        }, { immediate: true })
+        onMounted(() => {
+            setupPage();
+        })
+
+        onUnmounted(() => {
+            if (styleElement.value) {
+                document.head.removeChild(styleElement.value);
+            }
+        })
+
+        watch(() => props.orientation, () => {
+            console.log('watch', props.orientation)
+            setupPage();
+        })
 
         return {
+            pageRef,
             aspectRatio,
         }
     },
