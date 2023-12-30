@@ -48,9 +48,12 @@ export default defineComponent({
             }
 
             style.innerHTML = `
-                // html {
-                //     font-size: calc(${rect.width}px / ${fontNum}) !important;
-                // }
+                :root {
+                    --font-base: ${rect.width / fontNum};
+                }
+                html .calendar-page {
+                    font-size: calc(${rect.width}px / ${fontNum}) !important;
+                }
 
                 @media print {
                     @page {size: A4 ${props.orientation}}

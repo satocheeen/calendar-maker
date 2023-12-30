@@ -29,18 +29,18 @@ export const defaultYearlyDefine: YearlyCalendarStyleDefine = {
         year: {
             color: '#808080',
             thisYearFontSize: 2,
-            lastNextYearsFontSize: 1.2,
+            lastNextYearsFontSize: 1,
         },
         month: {
             color: '#808080',
             thisYearFontSize: 1,
-            lastNextYearsFontSize: 1,
+            lastNextYearsFontSize: .8,
         },
         day:{
             color: '#808080',
             holidayColor: '#ac6c7b',
             thisYearFontSize: 1,
-            lastNextYearsFontSize: .8,
+            lastNextYearsFontSize: .6,
         },
     },
     divider: {

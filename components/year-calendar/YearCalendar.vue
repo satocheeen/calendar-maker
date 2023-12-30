@@ -72,26 +72,39 @@ export default defineComponent({
 <style lang="scss" module>
 
 .container {
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+    grid-template-rows: calc(v-bind(yearFontSize) * 1.8) 1fr;
 }
 
 .calendarArea {
+    width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 3rem;
+    grid-template-rows: repeat(4, 1fr);
+    gap: calc(.1px * var(--font-base)) calc(2px * var(--font-base));
+
+    // >* {
+    //     border: 1px solid black;
+    // }
 }
 .year {
+    height: 100%;
+    overflow: hidden;
     font-family: v-bind(yearFontFamily);
     font-size: v-bind(yearFontSize);
     color: v-bind(yearColor);
-    margin-bottom: 2rem;
+    margin-bottom: calc(2px * var(--font-base));
     text-align: center;
 }
 .minimum {
     .year {
-        margin-bottom: .5rem;
+        // margin-bottom: calc(.5px * var(--font-base));
     }
     .calendarArea {
-        gap: .5rem 3rem;
+        // gap: calc(.5px * var(--font-base)) calc(3px * var(--font-base));
     }
 }
 </style>

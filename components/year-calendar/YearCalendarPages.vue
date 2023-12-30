@@ -1,7 +1,9 @@
 <template>
     <PageLayout orientation="portrait">
         <div :class="$style.thisYearPage">
-            <YearCalendar :year="$props.year" />
+            <div>
+                <YearCalendar :year="$props.year" />
+            </div>
         </div>
     </PageLayout>
     <PageLayout orientation="portrait">
@@ -9,7 +11,9 @@
             <div>
                 <YearCalendar :year="$props.year-1" minimum />
             </div>
-            <hr :class="$style.divider" />
+            <div>
+                <hr :class="$style.divider" />
+            </div>
             <div>
                 <YearCalendar :year="$props.year+1" minimum />
             </div>
@@ -65,20 +69,38 @@ export default defineComponent({
 
 <style lang="scss" module>
 .thisYearPage {
+    padding: 20% 10%;
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin: auto;
+
+    > * {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 .lastNextYearPage {
+    padding: 5% 10%;
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin: auto;
 
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: 1fr calc(2px * var(--font-base)) 1fr;
+
+    > * {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        // border: 1px solid blue;
+
+    }    
 }
 .divider {
     width: v-bind(dividerSize);
@@ -86,6 +108,5 @@ export default defineComponent({
     border-top-width: v-bind(dividerWidth);
     border-color: v-bind(dividerColor);
     border-style: v-bind(dividerStyle);
-    margin: 1.2rem;
 }
 </style>

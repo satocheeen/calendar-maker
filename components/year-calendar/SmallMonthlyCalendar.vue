@@ -1,5 +1,5 @@
 <template>
-    <div :class="$props.minimum ? $style.minimum : ''">
+    <div :class="[$style.container, $props.minimum ? $style.minimum : '']">
         <div :class="$style.month">{{ $props.month }}月</div>
         <ul :class="$style.dateArea">
             <li v-for="(d, index) in days" :key="index" :class="[$style.day, d.isHoliday ? $style.holiday : '']">
@@ -97,8 +97,19 @@ export default defineComponent({
 </script>
 
 <style lang="scss" module>
+.container {
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+    grid-template-rows: calc(v-bind(monthFontSize) + 1px * var(--font-base)) 1fr;
+
+    // >* {
+    //     border: 1px solid red;
+    // }
+}
 .month {
-    margin-bottom: .5rem;
+    // margin-bottom: calc(.5px * var(--font-base));
     font-family: v-bind(monthFontFamily);
     font-size: v-bind(monthFontSize);
     color: v-bind(monthColor);
@@ -107,27 +118,34 @@ export default defineComponent({
 .dateArea {
     list-style: none;
     display: grid;
+    width: 100%;
     grid-template-columns: repeat(7, 1fr);
-    gap: .5rem;
+    grid-template-rows: repeat(6, 1fr);
+    // >* {
+    //     border: 1px solid red;
+    // }
+
 }
 .day {
+    display: inline-block;
     font-family: v-bind(dayFontFamily);
     font-size: v-bind(dayFontSize);
     color: v-bind(dayColor);
     text-align: right;
+    overflow: hidden;
 
     &.holiday {
         color: v-bind(holidayColor);
     }
 }
 .minimum {
-    .month {
-        margin-bottom: .2rem;
-    }
+    // .month {
+    //     margin-bottom: calc(.2px * var(--font-base));
+    // }
 
-    .dateArea {
-        gap: .1rem .5rem;
-    }
+    // .dateArea {
+    //     gap: calc(.1px * var(--font-base)) calc(.5px * var(--font-base));
+    // }
 }
 
 </style>

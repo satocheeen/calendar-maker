@@ -32,7 +32,7 @@ export default defineComponent({
     grid-column: 1 / 2;
 
     box-sizing: border-box;
-    overflow-y: auto;
+    overflow-y: scroll;
     user-select: none;
 
     // border: 1px solid blue;
@@ -72,7 +72,7 @@ export default defineComponent({
     .container {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;
-        overflow: none;
+        overflow: hidden;
         width: 100%;
         height: unset;
     }
@@ -82,6 +82,7 @@ export default defineComponent({
     }
     .calendar {
         width: 100%;
+        overflow: hidden;
     }
 }
 </style>

@@ -23,8 +23,8 @@ font<template>
                     <v-slider
                         label="Size(前次年)"
                         thumb-label="always"
-                        min="0.5"
-                        max="5"
+                        min="0.1"
+                        max="1"
                         step=".1"
                         v-model="currentLastNextYearsFontSize"
                     />
