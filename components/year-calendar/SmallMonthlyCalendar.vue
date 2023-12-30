@@ -121,7 +121,7 @@ export default defineComponent({
     }
 
     .dateArea {
-        gap: 0rem .5rem;
+        gap: .2rem .5rem;
     }
 }
 </style>

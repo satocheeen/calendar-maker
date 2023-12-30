@@ -56,7 +56,11 @@ export default defineComponent({
             },
             set(val) {
                 if (!styleStore) return;
-                styleStore.yearlyDefine.value.divider.width = val;
+                styleStore.updateYearlyDefine({
+                    divider: Object.assign({}, styleStore.yearlyDefine.value.divider, {
+                        width: val,
+                    }),
+                })
             }
         })
 
@@ -66,7 +70,11 @@ export default defineComponent({
             },
             set(val) {
                 if (!styleStore) return;
-                styleStore.yearlyDefine.value.divider.size = val;
+                styleStore.updateYearlyDefine({
+                    divider: Object.assign({}, styleStore.yearlyDefine.value.divider, {
+                        size: val,
+                    }),
+                })
             }
         })
 
@@ -76,7 +84,11 @@ export default defineComponent({
             },
             set(val) {
                 if (!styleStore) return;
-                styleStore.yearlyDefine.value.divider.color = val;
+                styleStore.updateYearlyDefine({
+                    divider: Object.assign({}, styleStore.yearlyDefine.value.divider, {
+                        color: val,
+                    }),
+                })
             }
         })
 
@@ -86,7 +98,11 @@ export default defineComponent({
             },
             set(val) {
                 if (!styleStore) return;
-                styleStore.yearlyDefine.value.divider.style = val;
+                styleStore.updateYearlyDefine({
+                    divider: Object.assign({}, styleStore.yearlyDefine.value.divider, {
+                        style: val,
+                    }),
+                })
             }
         })
 
