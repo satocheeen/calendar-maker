@@ -68,31 +68,6 @@ export default defineComponent({
             }
         });
 
-        const fontDefine = computed(() => {
-            return styleStore?.monthlyCommonDefine.value.fonts;
-        })
-
-        const dateNumberFontFamily = computed(() => {
-            return fontDefine.value?.dateNum?.fontFamily;
-        })
-
-        const operationStore = inject(OperationStoreKey);
-        const dateNumberFontSize = computed(() => {
-            return operationStore?.fontSizePx(fontDefine.value?.dateNum?.fontSize);
-        })
-
-        const eventColor = computed(() => {
-            return calendarStyleDefine.value?.eventNameTextColor;
-        })
-
-        const eventFontFamily = computed(() => {
-            return fontDefine.value?.eventName?.fontFamily;
-        })
-
-        const eventFontSize = computed(() => {
-            return operationStore?.fontSizePx(fontDefine.value?.eventName?.fontSize);
-        })
-
         const innerBoxStyle = computed((): CSSProperties => {
             const borderColor = calendarStyleDefine.value?.borderColor;
 
@@ -103,15 +78,9 @@ export default defineComponent({
 
         return {
             dayNum,
-            // isHoliday,
             eventName,
             numberStyle,
-            eventColor,
-            eventFontFamily,
-            eventFontSize,
             innerBoxStyle,
-            dateNumberFontFamily,
-            dateNumberFontSize,
         }
     },
 });
@@ -140,18 +109,17 @@ export default defineComponent({
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: v-bind(dateNumberFontFamily);
-    font-size: v-bind(dateNumberFontSize);
+    font-family: var(--day-font-family);
+    font-size: var(--day-font-size);
 }
 .EventName {
     display: flex;
     width: 100%;
     justify-content: flex-end;
-    color: v-bind(eventColor);
-    // transform: scale(.7) translateX(15%);
+    color: var(--event-color);
     word-break: keep-all;
-    font-size: v-bind(eventFontSize);
-    font-family: v-bind(eventFontFamily);
+    font-size: var(--event-font-size);
+    font-family: var(--event-font-family);
     margin-right: .2rem;
 }
 </style>

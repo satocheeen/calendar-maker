@@ -58,21 +58,50 @@ export default defineComponent({
         },
     },
     setup(props) {
-        const store = inject(StyleStoreKey);
+        const styleStore = inject(StyleStoreKey);
         const calendarSetting = useMonthlyCalendarSetting(props);
         provide(MonthlyCalendarSettingStoreKey, calendarSetting);
 
+        const fontDefine = computed(() => {
+            return styleStore?.monthlyCommonDefine.value.fonts;
+        })
+
+        const dateNumberFontFamily = computed(() => {
+            return fontDefine.value?.dateNum?.fontFamily;
+        })
+
+        const dateNumberFontSize = computed(() => {
+            return fontDefine.value?.dateNum?.fontSize + 'em';
+        })
+
+        const eventFontFamily = computed(() => {
+            return fontDefine.value?.eventName?.fontFamily;
+        })
+
+        const eventFontSize = computed(() => {
+            return fontDefine.value?.eventName?.fontSize + 'em';
+        })
+
+        const eventColor = computed(() => {
+            return calendarSetting.styleDefine.value?.colors.eventNameTextColor;
+        })
+
         const orientation = computed<Orientation>(() => {
-            return store?.monthlyCommonDefine.value.orientation ?? 'portrait';
+            return styleStore?.monthlyCommonDefine.value.orientation ?? 'portrait';
         })
 
         const styleDefine = computed(() => {
-            return store?.getMonthlyCalendarStyleDefine(props.year, props.month);
+            return styleStore?.getMonthlyCalendarStyleDefine(props.year, props.month);
         })
 
         return {
             orientation,
             styleDefine,
+            dateNumberFontFamily,
+            dateNumberFontSize,
+            eventFontFamily,
+            eventFontSize,
+            eventColor,
         }
     }
 });
@@ -80,6 +109,11 @@ export default defineComponent({
 
 <style lang="scss" module>
 .container {
+    --day-font-family: v-bind(dateNumberFontFamily);
+    --day-font-size: v-bind(dateNumberFontSize);
+    --event-font-family: v-bind(eventFontFamily);
+    --event-font-size: v-bind(eventFontSize);
+    --event-color: v-bind(eventColor);
 }
 .page {
     width: 100%;
