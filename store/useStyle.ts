@@ -51,7 +51,12 @@ export default function useStyle(props: Props) {
     })
 
     const setCurrentMonthlyCalendarSetting = (values: Partial<MonthlyCalendarDefine>) => {
-        userMonthlyDefine.value[yearMonthKey.value] = Object.assign({}, userMonthlyDefine.value[yearMonthKey.value], values);
+        const newValues = Object.assign({}, values);
+        // 画像変更時はOffsetリセット
+        if (newValues.imagePath) {
+            newValues.imageOffset = { x: 0, y: 0 }
+        }
+        userMonthlyDefine.value[yearMonthKey.value] = Object.assign({}, userMonthlyDefine.value[yearMonthKey.value], newValues);
     }
 
     const currentMonthlyCalendarStyleDefine = computed(() => {
