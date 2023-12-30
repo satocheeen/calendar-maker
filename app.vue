@@ -60,6 +60,11 @@ html::-webkit-scrollbar {
     width: 0;
     height: 0;
 }
+@media print {
+    .v-overlay__content {
+        display: none !important;
+    }
+}
 </style>
 
 <style lang="scss" module>

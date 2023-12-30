@@ -24,6 +24,7 @@ import { inject, computed, defineComponent } from 'vue';
 import DateBox from './DateBox.vue';
 import { StyleStoreKey } from '@/store/useStyle';
 import useDate from '@/util/useDate';
+import { MonthlyCalendarSettingStoreKey } from './useMonthlyCalendarSetting';
 
 const weekDays = ['月', '火', '水', '木', '金', '土', '日'];
 
@@ -33,22 +34,19 @@ const weekDays = ['月', '火', '水', '木', '金', '土', '日'];
 export default defineComponent({
     components: { DateBox },
     name: 'MonthDates',
-    props: {
-        year: {
-            type: Number,
-            required: true,
-        },
-        month: {
-            type: Number,
-            required: true,
-        },
-    },
-    setup(props) {
+    setup() {
         const styleStore = inject(StyleStoreKey);
-        const dates = useDate(props);
+        const settingStore = inject(MonthlyCalendarSettingStoreKey);
+        const dates = useDate({
+            year: settingStore?.year.value ?? 0,
+            month: settingStore?.month.value ?? 0,
+        });
 
+        const styleDefine = computed(() => {
+            return settingStore?.styleDefine.value;
+        })
         const weekdayLabelColor = computed(() => {
-            return styleStore?.currentMonthlyCalendarStyleDefine.value.colors.weekdayLabelTextColor;
+            return styleDefine.value?.colors.weekdayLabelTextColor;
         });
 
         const weekdayLabelFontFamily = computed(() => {
@@ -60,7 +58,7 @@ export default defineComponent({
         })
 
         const weekdayLabelBackgroundColor = computed(() => {
-            return styleStore?.currentMonthlyCalendarStyleDefine.value.colors.weekdayLabelBackgroundColor;
+            return styleDefine.value?.colors.weekdayLabelBackgroundColor;
 
         })
 

@@ -1,10 +1,13 @@
 <template>
-    <div :class="$style.container">
+    <div :class="$style.container" v-if="styleDefine">
         <template v-if="orientation==='landscape'">
             <PageLayout orientation="landscape">
                 <div :class="[$style.innerPage, $style.odd]">
-                    <CalendarHeader :year="year" :month="month" :class="$style.header" />
-                    <ImageBox />
+                    <CalendarHeader
+                        :year="year" :month="month"
+                        :class="$style.header" />
+                    <ImageBox
+                    />
                 </div>
             </PageLayout>
             <PageLayout orientation="landscape">
@@ -16,7 +19,9 @@
         <template v-else>
             <PageLayout orientation="portrait" :class="$style.portrait">
                 <div :class="[$style.innerPage, $style.odd]">
-                    <CalendarHeader :year="year" :month="month" :class="$style.header" />
+                    <CalendarHeader
+                        :year="year" :month="month"
+                        :class="$style.header" />
                     <ImageBox/>
                 </div>
                 <div :class="[$style.innerPage, $style.even]">
@@ -37,6 +42,7 @@ import { inject } from 'vue';
 import { StyleStoreKey } from '@/store/useStyle';
 import { computed } from 'vue';
 import { type Orientation } from '@/store/types';
+import useMonthlyCalendarSetting, { MonthlyCalendarSettingStoreKey } from './useMonthlyCalendarSetting';
 
 export default defineComponent({
     components: { CalendarHeader, MonthDates, ImageBox, PageLayout },
@@ -51,15 +57,22 @@ export default defineComponent({
             required: true,
         },
     },
-    setup() {
+    setup(props) {
         const store = inject(StyleStoreKey);
+        const calendarSetting = useMonthlyCalendarSetting(props);
+        provide(MonthlyCalendarSettingStoreKey, calendarSetting);
 
         const orientation = computed<Orientation>(() => {
             return store?.monthlyCommonDefine.value.orientation ?? 'portrait';
         })
 
+        const styleDefine = computed(() => {
+            return store?.getMonthlyCalendarStyleDefine(props.year, props.month);
+        })
+
         return {
             orientation,
+            styleDefine,
         }
     }
 });

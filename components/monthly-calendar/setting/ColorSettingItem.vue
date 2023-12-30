@@ -16,6 +16,7 @@ import { StyleStoreKey } from '@/store/useStyle';
 import type { PropType } from 'vue';
 import { computed, defineComponent, inject } from 'vue';
 import type { YearMonth } from '~/store/useOperation';
+import { MonthlyCalendarSettingStoreKey } from '../useMonthlyCalendarSetting';
 
 type ColorItem = {
     defineKey: keyof MonthlyColorDefine;
@@ -35,9 +36,10 @@ export default defineComponent({
     },
     setup(props) {
         const styleStore = inject(StyleStoreKey);
+        const settingStore = inject(MonthlyCalendarSettingStoreKey);
 
         const calendarStyleDefine = computed(() => {
-            return styleStore?.currentMonthlyCalendarStyleDefine.value;
+            return settingStore?.styleDefine.value;
         });
 
         const myColors = computed(() => {

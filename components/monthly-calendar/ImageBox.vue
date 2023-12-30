@@ -20,14 +20,16 @@ import { ref } from 'vue';
 import { onMounted } from 'vue';
 import { onUnmounted } from 'vue';
 import { watch } from 'vue';
+import { MonthlyCalendarSettingStoreKey } from './useMonthlyCalendarSetting';
 
 export default defineComponent({
     name: 'ImageBox',
     setup() {
         const styleStore = inject(StyleStoreKey);
+        const settingStore = inject(MonthlyCalendarSettingStoreKey);
 
         const calendarStyleDefine = computed(() => {
-            return styleStore?.currentMonthlyCalendarStyleDefine.value;
+            return settingStore?.styleDefine.value;
         });
 
         const imagePath = computed(() => {
@@ -41,7 +43,7 @@ export default defineComponent({
         })
 
         const imageBorderColor = computed(() => {
-            return styleStore?.currentMonthlyCalendarStyleDefine.value.colors.imageBorderColor;
+            return calendarStyleDefine.value?.colors.imageBorderColor;
         });
 
         let draging = false;

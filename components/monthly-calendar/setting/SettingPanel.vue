@@ -47,6 +47,7 @@ import YearSelect from '@/components/common/YearSelect.vue';
 import MonthSelect from '@/components/common/MonthSelect.vue';
 import PrintOutBtn from '@/components/common/PrintOutBtn.vue';
 import OrientationSelect from './OrientationSelect.vue';
+import { OperationStoreKey } from '~/store/useOperation';
 
 export type TabKind = 'month' | 'year';
 export default defineComponent({
@@ -64,6 +65,7 @@ export default defineComponent({
     },
     setup(props, { emit }) {
         const styleStore = inject(StyleStoreKey);
+        const operationStore = inject(OperationStoreKey);
         const currentTab = computed<TabKind>({
             get() {
                 return props.tab;
@@ -74,7 +76,8 @@ export default defineComponent({
         })
 
         const calendarStyleDefine = computed(() => {
-            return styleStore?.currentMonthlyCalendarStyleDefine.value;
+            const yearMonth = operationStore?.yearMonth.value;
+            return styleStore?.getMonthlyCalendarStyleDefine(yearMonth?.year ?? 0, yearMonth?.month ?? 0);
         });
         const imagePath = computed({
             get() {

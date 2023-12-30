@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import { EventDayInfo, getEventDaysOfMonth } from "./holiday_checker";
+import { type EventDayInfo, getEventDaysOfMonth } from "./holiday_checker";
 import dayjs from "dayjs";
 import weekday from 'dayjs/plugin/weekday';
 dayjs.extend(weekday);

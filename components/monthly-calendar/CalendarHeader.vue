@@ -13,6 +13,7 @@
 <script lang="ts">
 import { StyleStoreKey } from '@/store/useStyle';
 import { defineComponent, computed, inject, type CSSProperties } from 'vue';
+import { MonthlyCalendarSettingStoreKey } from './useMonthlyCalendarSetting';
 
 export default defineComponent({
     name: 'CalendarHeader',
@@ -28,6 +29,7 @@ export default defineComponent({
     },
     setup(props) {
         const styleStore = inject(StyleStoreKey);
+        const settingStore = inject(MonthlyCalendarSettingStoreKey);
 
         const monthName = computed(() => {
             const formatter = new Intl.DateTimeFormat('en', { month: 'long' });
@@ -35,12 +37,8 @@ export default defineComponent({
             return name;
         });
 
-        const calendarStyleDefine = computed(() => {
-            return styleStore?.currentMonthlyCalendarStyleDefine.value;
-        })
-
         const style = computed((): CSSProperties => {
-            const color = calendarStyleDefine.value?.colors.yearMonthTextColor;
+            const color = settingStore?.styleDefine.value?.colors.yearMonthTextColor;
             return {
                 color,
             }

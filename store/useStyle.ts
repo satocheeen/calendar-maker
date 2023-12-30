@@ -10,7 +10,7 @@ type Props = {
     operation: OperationStore;
 }
 export default function useStyle(props: Props) {
-    const userMonthlyDefine = useLocalStorage<{[yearMonth: string]: MonthlyCalendarDefine}>({
+    const userMonthlyDefine = useLocalStorage<{[yearMonth: string]: DeepPartial<MonthlyCalendarDefine>}>({
         key: 'monthlyDefine',
         default: {},
     })
@@ -59,13 +59,14 @@ export default function useStyle(props: Props) {
         userMonthlyDefine.value[yearMonthKey.value] = Object.assign({}, userMonthlyDefine.value[yearMonthKey.value], newValues);
     }
 
-    const currentMonthlyCalendarStyleDefine = computed(() => {
-        const savedColors = (userMonthlyDefine.value[yearMonthKey.value] ?? {}).colors ?? {};
+    const getMonthlyCalendarStyleDefine = (year: number, month: number) => {
+        const yearMonthKey = getYearMonthKeyStr({year, month});
+        const savedColors = (userMonthlyDefine.value[yearMonthKey] ?? {}).colors ?? {};
         const colors = Object.assign({}, defaultPreset.value, savedColors);
-        const define = Object.assign({}, userMonthlyDefine.value[yearMonthKey.value] ?? {}, { colors });
-        return define;
-    })
-    
+        const define = Object.assign({}, userMonthlyDefine.value[yearMonthKey] ?? {}, { colors });
+        return define as MonthlyCalendarDefine;
+    }
+
     const setCurrentMonthlyCalendarColor = (key: keyof MonthlyColorDefine, color: string) => {
         const currentColors = (userMonthlyDefine.value[yearMonthKey.value] ?? {}).colors ?? {};
         const newColors = Object.assign(currentColors, { [key]: color });
@@ -206,7 +207,7 @@ export default function useStyle(props: Props) {
 
     return {
         setCurrentMonthlyCalendarSetting,
-        currentMonthlyCalendarStyleDefine,
+        getMonthlyCalendarStyleDefine,
         setCurrentMonthlyCalendarColor,
         presets,
         addPreset,

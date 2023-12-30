@@ -115,12 +115,17 @@ import { onMounted, onUnmounted } from 'vue';
 import { ref, defineComponent, inject } from 'vue';
 import PresetSelector from './PresetSelector.vue';
 import ColorSettingItem from './ColorSettingItem.vue';
+import useMonthlyCalendarSetting, { MonthlyCalendarSettingStoreKey } from '../useMonthlyCalendarSetting';
+import useOperation, { OperationStoreKey } from '~/store/useOperation';
 
 export default defineComponent({
     name: 'ColorSettingPanel',
     components: { PresetSelector, ColorSettingItem },
     setup() {
         const isShowPresetSelector = ref(false);
+        const operationStore = inject(OperationStoreKey);
+        const calendarSettingStore = useMonthlyCalendarSetting(operationStore?.yearMonth.value ?? {year: 0, month: 0});
+        provide(MonthlyCalendarSettingStoreKey, calendarSettingStore);
 
         const onAreaClick = () => {
             if (isShowPresetSelector.value) {
@@ -155,7 +160,8 @@ export default defineComponent({
 
         const onSaveToPreset = () => {
             if (!styleStore) return;
-            const currentColors = styleStore.currentMonthlyCalendarStyleDefine.value.colors;
+            const currentColors = calendarSettingStore?.styleDefine.value?.colors;
+            if (!currentColors) return;
             styleStore.addPreset(currentColors);
             savedFlag.value = true;
         };
