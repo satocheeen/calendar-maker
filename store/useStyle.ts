@@ -4,6 +4,7 @@ import { defaultYearlyDefine, defaultMonthlyCalendarCommonDefine, defaultPresets
 import useLocalStorage from "./useLocalStorage";
 import type { OperationStore, YearMonth } from "./useOperation";
 import deepmerge from "deepmerge";
+import type { DeepPartial } from "~/util/types_util";
 
 type Props = {
     operation: OperationStore;
@@ -31,13 +32,13 @@ export default function useStyle(props: Props) {
         },
     });
 
-    const userYearlyDefine = useLocalStorage<Partial<YearlyCalendarStyleDefine>>({
+    const userYearlyDefine = useLocalStorage<DeepPartial<YearlyCalendarStyleDefine>>({
         key: 'yearlyDefine',
         default: {},
     })
     const yearlyDefine = computed(() => {
         const result = deepmerge(defaultYearlyDefine, userYearlyDefine.value);
-        return result;
+        return result as YearlyCalendarStyleDefine;
     })
 
     const defaultPreset = computed(() => {
@@ -132,7 +133,7 @@ export default function useStyle(props: Props) {
         userMonthlyCommonDefine.value.orientation = orientation;
     }
 
-    const updateYearlyDefine = (value: Partial<YearlyCalendarStyleDefine>) => {
+    const updateYearlyDefine = (value: DeepPartial<YearlyCalendarStyleDefine>) => {
         userYearlyDefine.value = deepmerge(userYearlyDefine.value, value);
     }
 

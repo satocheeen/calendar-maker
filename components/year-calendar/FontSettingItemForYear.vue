@@ -9,14 +9,24 @@ font<template>
                         v-model="currentFontFamily"
                     />
                 </div>
-                <div :class="$style.fontSize">
+                <div :class="$style.thisYearFontSize">
                     <v-slider
-                        label="Size"
+                        label="Size(今年)"
                         thumb-label="always"
                         min="0.5"
                         max="5"
                         step=".1"
-                        v-model="currentFontSize"
+                        v-model="currentThisYearFontSize"
+                    />
+                </div>
+                <div :class="$style.lastNextYearsFontSize">
+                    <v-slider
+                        label="Size(前次年)"
+                        thumb-label="always"
+                        min="0.5"
+                        max="5"
+                        step=".1"
+                        v-model="currentLastNextYearsFontSize"
                     />
                 </div>
                 <div :class="$style.fontColor">
@@ -81,9 +91,9 @@ export default defineComponent({
                 })
             }
         });
-        const currentFontSize = computed({
+        const currentThisYearFontSize = computed({
             get() {
-                return fonts.value?.fontSize;
+                return fonts.value?.thisYearFontSize;
             },
             set(val) {
                 if (!styleStore)
@@ -91,12 +101,29 @@ export default defineComponent({
                 styleStore.updateYearlyDefine({
                     fonts: {
                         [props.target]: {
-                            fontSize: val,
+                            thisYearFontSize: val,
                         },
                     }
                 })
             }
         });
+        const currentLastNextYearsFontSize = computed({
+            get() {
+                return fonts.value?.lastNextYearsFontSize;
+            },
+            set(val) {
+                if (!styleStore)
+                    return;
+                styleStore.updateYearlyDefine({
+                    fonts: {
+                        [props.target]: {
+                            lastNextYearsFontSize: val,
+                        },
+                    }
+                })
+            }
+        });
+
         const currentFontColor = computed({
             get() {
                 return fonts.value?.color;
@@ -134,7 +161,8 @@ export default defineComponent({
         });
         return {
             currentFontFamily,
-            currentFontSize,
+            currentThisYearFontSize,
+            currentLastNextYearsFontSize,
             currentFontColor,
             currentHolidayFontColor,
         };
@@ -161,10 +189,15 @@ export default defineComponent({
         grid-row: 1 / 2;
     }
 
-    .fontSize {
+    .thisYearFontSize {
         grid-column: 1 / 2;
         grid-row: 2 / 3;
     }
+    .lastNextYearsFontSize {
+        grid-column: 1 / 2;
+        grid-row: 3 / 4;
+    }
+
 
     .fontColor {
         grid-column: 2 / 3;

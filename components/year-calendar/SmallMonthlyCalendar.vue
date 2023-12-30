@@ -47,11 +47,13 @@ export default defineComponent({
         })
 
         const monthFontFamily = computed(() => {
-            return  fontDefine.value?.month?.fontFamily;
+            return  fontDefine.value?.month.fontFamily;
         })
 
         const monthFontSize = computed(() => {
-            const size = fontDefine.value?.month?.fontSize ?? 1;
+            const month = fontDefine.value?.month;
+            if (!month) return '1rem';
+            const size = !props.minimum ? month.thisYearFontSize : month.lastNextYearsFontSize;
             return size + 'rem';
         })
 
@@ -64,7 +66,9 @@ export default defineComponent({
         })
 
         const dayFontSize = computed(() => {
-            const size = fontDefine.value?.day?.fontSize ?? 1;
+            const day = fontDefine.value?.day;
+            if (!day) return '1rem';
+            const size = !props.minimum ? day.thisYearFontSize : day.lastNextYearsFontSize;
             return size + 'rem';
         })
 
@@ -117,11 +121,11 @@ export default defineComponent({
 .minimum {
     .month {
         margin-bottom: .2rem;
-        font-size: v-bind(dayFontSize);
     }
 
     .dateArea {
         gap: .2rem .5rem;
     }
 }
+
 </style>

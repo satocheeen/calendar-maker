@@ -26,9 +26,9 @@ export default defineComponent({
         },
         minimum: {
             type: Boolean,
-        }
+        },
     },
-    setup() {
+    setup(props) {
         const styleStore = inject(StyleStoreKey);
 
         const fontDefine = computed(() => {
@@ -40,7 +40,9 @@ export default defineComponent({
         })
 
         const yearFontSize = computed(() => {
-            const size = fontDefine.value?.year?.fontSize ?? 1;
+            const year = fontDefine.value?.year;
+            if (!year) return '1rem';
+            const size = !props.minimum ? year.thisYearFontSize : year.lastNextYearsFontSize;
             return size + 'rem';
         })
 
@@ -49,7 +51,9 @@ export default defineComponent({
         })
 
         const dayFontSize = computed(() => {
-            const size = fontDefine.value?.day?.fontSize ?? 1;
+            const day = fontDefine.value?.day;
+            if (!day) return '1rem';
+            const size = !props.minimum ? day.thisYearFontSize : day.lastNextYearsFontSize;
             return size + 'rem';
         })
 
@@ -83,7 +87,6 @@ export default defineComponent({
 .minimum {
     .year {
         margin-bottom: .5rem;
-        font-size: calc(v-bind(dayFontSize) * 1.2);
     }
     .calendarArea {
         gap: .5rem 3rem;

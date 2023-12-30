@@ -39,33 +39,40 @@ export type MonthlyCalendarCommonDefine = {
     orientation: Orientation;
 }
 
+type YearlyFontStyle = {
+    fontFamily?: string;
+    color: string;
+    thisYearFontSize: number;
+    lastNextYearsFontSize: number;
+}
+
 /**
  * Yearly Calendar定義
  */
 export type YearlyCalendarStyleDefine = {
     fonts: {
-        year?: FontStyle;
-        month?: FontStyle;
-        day?: DayFontStyle;
-        coverTitle?: FontStyle;
+        year: YearlyFontStyle;
+        month: YearlyFontStyle;
+        day: YearlyFontStyle & { holidayColor: string }
     },
-    coverTitle?: string;
     divider: {
         size: number;
-        color?: string;
+        color: string;
         width: number;
-        style?: string;
+        style: string;
+    },
+    cover: {
+        font: FontStyle;
+        title?: string;
     }
 }
 
 type FontStyle = {
-    fontSize?: number;   // 単位rem
+    fontSize: number;   // 単位rem
     fontFamily?: string;
-    color?: string;
+    color: string;
 }
-type DayFontStyle = FontStyle & {
-    holidayColor?: string;
-}
+
 type MonthlyFontStyle = Omit<FontStyle, 'color'>;
 
 export type FontDefine = {

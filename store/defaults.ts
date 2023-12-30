@@ -27,29 +27,35 @@ export const defaultMonthlyCalendarCommonDefine: MonthlyCalendarCommonDefine = {
 export const defaultYearlyDefine: YearlyCalendarStyleDefine = {
     fonts: {
         year: {
-            fontSize: 2,
             color: '#808080',
+            thisYearFontSize: 2,
+            lastNextYearsFontSize: 1.2,
         },
         month: {
-            fontSize: 1,
             color: '#808080',
+            thisYearFontSize: 1,
+            lastNextYearsFontSize: 1,
         },
         day:{
-            fontSize: .8,
             color: '#808080',
             holidayColor: '#ac6c7b',
+            thisYearFontSize: 1,
+            lastNextYearsFontSize: .8,
         },
-        coverTitle: {
-            fontSize: 2,
-            color: '#808080',
-        }
     },
-    coverTitle: 'Calendar',
     divider: {
         size: 30,
         width: 0.1,
         color: '#808080',
-    }
+        style: 'solid',
+    },
+    cover: {
+        font: {
+            fontSize: 2,
+            color: '#808080',
+        },
+        title: 'Calendar',
+    },
 }
 
 export const defaultPresets: MonthlyColorDefine[] = [
