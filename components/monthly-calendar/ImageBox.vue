@@ -5,7 +5,11 @@
         @mousemove="handleMouseMove"
         v-if="hasImage"
     />
-    <div :class="[$style.image, $style.noImage]" v-else />
+    <div :class="[$style.image, $style.noImage]" v-else>
+        <p :class="$style.message">
+            画像URLを指定すると、ここに画像が表示されます。
+        </p>
+    </div>
 </template>
 
 <script lang="ts">
@@ -131,6 +135,15 @@ export default defineComponent({
 
     &.noImage {
         cursor: default;
+        background-color: #eee;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@media print {
+    .message {
+        display: none;
     }
 }
 
