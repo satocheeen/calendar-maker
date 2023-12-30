@@ -19,8 +19,9 @@ export default function useOperation() {
     const calendarBaseFontSize = ref(1);
 
     const fontSizePx = (rem: number|undefined) => {
-        if (!rem) return '0px';
-        return rem * calendarBaseFontSize.value + 'px';
+        if (!rem) return '0';
+        return rem + 'em';
+        // return rem * calendarBaseFontSize.value + 'px';
     }
 
     return {

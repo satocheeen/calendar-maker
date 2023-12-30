@@ -47,25 +47,28 @@ export default defineComponent({
                 operationStore.calendarBaseFontSize.value = rect.width / fontNum;
             }
 
+            const screenFontSize = rect.width / fontNum;
+            const printFontSize = widthPt / fontNum;
+
             style.innerHTML = `
                 :root {
-                    --font-base: ${rect.width / fontNum};
+                    --font-base: ${screenFontSize};
                 }
                 html .calendar-page {
-                    font-size: calc(${rect.width}px / ${fontNum}) !important;
+                    font-size: ${screenFontSize}px !important;
                 }
 
                 @media print {
                     @page {size: A4 ${props.orientation}}
-                    html {
-                        font-size: calc(${widthPt}pt / ${fontNum}) !important;
+                    html .calendar-page {
+                        font-size: ${printFontSize}pt !important;
                     }
                 }
             `;
             document.head.appendChild(style);
 
             styleElement.value = style;
-            console.log('style', rect.width/fontNum, style);
+            console.log('style', screenFontSize, printFontSize, rect.width, style);
         }
 
         onMounted(() => {
