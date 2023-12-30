@@ -25,6 +25,7 @@ import DateBox from './DateBox.vue';
 import { StyleStoreKey } from '@/store/useStyle';
 import useDate from '@/util/useDate';
 import { MonthlyCalendarSettingStoreKey } from './useMonthlyCalendarSetting';
+import { OperationStoreKey } from '~/store/useOperation';
 
 const weekDays = ['月', '火', '水', '木', '金', '土', '日'];
 
@@ -53,8 +54,9 @@ export default defineComponent({
             return styleStore?.monthlyCommonDefine.value.fonts.weekdayLabel?.fontFamily;
         })
 
+        const operationStore = inject(OperationStoreKey);
         const weekdayLabelFontSize = computed(() => {
-            return styleStore?.monthlyCommonDefine.value.fonts.weekdayLabel?.fontSize + 'rem';
+            return operationStore?.fontSizePx(styleStore?.monthlyCommonDefine.value.fonts.weekdayLabel?.fontSize);
         })
 
         const weekdayLabelBackgroundColor = computed(() => {

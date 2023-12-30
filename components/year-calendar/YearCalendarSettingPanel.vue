@@ -1,6 +1,4 @@
 <template>
-    <PrintOutBtn />
-
     <v-container fluid>
         <YearSelect />
         <v-divider :class="$style.divider" />
@@ -29,11 +27,10 @@ import { defineComponent } from 'vue';
 import FontSettingItemForYear from './FontSettingItemForYear.vue';
 import DividerSettingItem from './DividerSettingItem.vue';
 import YearSelect from '../common/YearSelect.vue';
-import PrintOutBtn from '../common/PrintOutBtn.vue';
 
 export default defineComponent({
     name: 'YearCalendarSettingPanel',
-    components: { FontSettingItemForYear, DividerSettingItem, YearSelect, PrintOutBtn }
+    components: { FontSettingItemForYear, DividerSettingItem, YearSelect }
 });
 </script>
 

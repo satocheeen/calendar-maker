@@ -14,6 +14,7 @@
 import { StyleStoreKey } from '@/store/useStyle';
 import { defineComponent, computed, inject, type CSSProperties } from 'vue';
 import { MonthlyCalendarSettingStoreKey } from './useMonthlyCalendarSetting';
+import { OperationStoreKey } from '~/store/useOperation';
 
 export default defineComponent({
     name: 'CalendarHeader',
@@ -30,6 +31,7 @@ export default defineComponent({
     setup(props) {
         const styleStore = inject(StyleStoreKey);
         const settingStore = inject(MonthlyCalendarSettingStoreKey);
+        const operationStore = inject(OperationStoreKey);
 
         const monthName = computed(() => {
             const formatter = new Intl.DateTimeFormat('en', { month: 'long' });
@@ -49,8 +51,7 @@ export default defineComponent({
         })
 
         const monthNumFontSize = computed(() => {
-            const fontSize = fontDefine.value?.monthNum?.fontSize;
-            return fontSize ? fontSize + 'rem' : undefined;
+            return operationStore?.fontSizePx(fontDefine.value?.monthNum?.fontSize);
         })
 
         const monthNumFontFamily = computed(() => {
@@ -60,7 +61,7 @@ export default defineComponent({
 
         const monthCharacterFontSize = computed(() => {
             const fontSize = fontDefine.value?.monthCharacter?.fontSize;
-            return fontSize ? fontSize + 'rem' : undefined;
+            return operationStore?.fontSizePx(fontSize);
         })
 
         const monthCharacterFontFamily = computed(() => {
@@ -69,7 +70,7 @@ export default defineComponent({
 
         const yearFontSize = computed(() => {
             const fontSize = fontDefine.value?.year?.fontSize;
-            return fontSize ? fontSize + 'rem' : undefined;
+            return operationStore?.fontSizePx(fontSize);
         });
 
         const yearFontFamily = computed(() => {

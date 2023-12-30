@@ -16,6 +16,7 @@ import { computed, defineComponent, inject, type CSSProperties } from 'vue';
 import { StyleStoreKey } from '@/store/useStyle';
 import { type DayInfo } from '@/util/useDate';
 import { MonthlyCalendarSettingStoreKey } from './useMonthlyCalendarSetting';
+import { OperationStoreKey } from '~/store/useOperation';
 
 export default defineComponent({
     name: 'DateBox',
@@ -75,8 +76,9 @@ export default defineComponent({
             return fontDefine.value?.dateNum?.fontFamily;
         })
 
+        const operationStore = inject(OperationStoreKey);
         const dateNumberFontSize = computed(() => {
-            return fontDefine.value?.dateNum?.fontSize + 'rem';
+            return operationStore?.fontSizePx(fontDefine.value?.dateNum?.fontSize);
         })
 
         const eventColor = computed(() => {
@@ -88,7 +90,7 @@ export default defineComponent({
         })
 
         const eventFontSize = computed(() => {
-            return fontDefine.value?.eventName?.fontSize + 'rem';
+            return operationStore?.fontSizePx(fontDefine.value?.eventName?.fontSize);
         })
 
         const innerBoxStyle = computed((): CSSProperties => {

@@ -32,7 +32,7 @@ export default defineComponent({
         })
 
         const fontSize = computed(() => {
-            return fontStyle.value?.fontSize + 'rem';
+            return operationStore?.fontSizePx(fontStyle.value?.fontSize);
         })
 
         const color = computed(() => {

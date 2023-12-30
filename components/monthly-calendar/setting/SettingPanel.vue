@@ -1,5 +1,4 @@
 <template>
-    <PrintOutBtn />
     <v-tabs v-model="currentTab" align-tabs="center">
         <v-tab value="month">月ごとの設定</v-tab>
         <v-tab value="year">年間表示</v-tab>
@@ -45,14 +44,13 @@ import ColorSettingPanel from './ColorSettingPanel.vue';
 import FontSettingPanel from './FontSettingPanel.vue';
 import YearSelect from '@/components/common/YearSelect.vue';
 import MonthSelect from '@/components/common/MonthSelect.vue';
-import PrintOutBtn from '@/components/common/PrintOutBtn.vue';
 import OrientationSelect from './OrientationSelect.vue';
 import { OperationStoreKey } from '~/store/useOperation';
 
 export type TabKind = 'month' | 'year';
 export default defineComponent({
     name: "SettingPanel",
-    components: { ColorSettingPanel, FontSettingPanel, YearSelect, MonthSelect, PrintOutBtn, OrientationSelect },
+    components: { ColorSettingPanel, FontSettingPanel, YearSelect, MonthSelect, OrientationSelect },
     props: {
         tab: {
             type: String as PropType<TabKind>,

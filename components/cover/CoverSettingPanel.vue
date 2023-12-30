@@ -1,6 +1,4 @@
 <template>
-    <PrintOutBtn />
-
     <v-container fluid>
         <YearSelect />
         <v-divider :class="$style.divider" />
@@ -20,14 +18,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import PrintOutBtn from '../common/PrintOutBtn.vue';
 import YearSelect from '../common/YearSelect.vue';
 import CoverFontSettingItem from './CoverFontSettingItem.vue';
 import { StyleStoreKey } from '~/store/useStyle';
 
 export default defineComponent({
     name: 'CoverSettingPanel',
-    components: { PrintOutBtn, YearSelect, CoverFontSettingItem },
+    components: { YearSelect, CoverFontSettingItem },
     setup() {
         const styleStore = inject(StyleStoreKey);
         const title = computed({

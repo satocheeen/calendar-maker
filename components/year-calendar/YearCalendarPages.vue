@@ -22,6 +22,7 @@ import { inject, computed, defineComponent } from 'vue';
 import PageLayout from '../common/PageLayout.vue';
 import YearCalendar from './YearCalendar.vue';
 import { StyleStoreKey } from '@/store/useStyle';
+import { OperationStoreKey } from '~/store/useOperation';
 
 export default defineComponent({
     name: 'YearCalendarPages',
@@ -34,9 +35,10 @@ export default defineComponent({
     },
     setup() {
         const styleStore = inject(StyleStoreKey);
-        
+        const operationStore = inject(OperationStoreKey);
+
         const dividerWidth = computed(() => {
-            return styleStore?.yearlyDefine.value.divider?.width + 'rem';
+            return operationStore?.fontSizePx(styleStore?.yearlyDefine.value.divider?.width);
         })
 
         const dividerSize = computed(() => {

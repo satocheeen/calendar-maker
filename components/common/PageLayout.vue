@@ -7,6 +7,7 @@
 <script lang="ts">
 import { type Orientation } from '@/store/types';
 import { defineComponent, watch, ref, computed } from 'vue';
+import { OperationStoreKey } from '~/store/useOperation';
 
 export default defineComponent({
     name: 'PageLayout',
@@ -29,6 +30,7 @@ export default defineComponent({
         })
 
         const styleElement = ref<HTMLElement|null>(null);
+        const operationStore = inject(OperationStoreKey);
 
         const setupPage = () => {
             if (!process.client) return;
@@ -41,11 +43,14 @@ export default defineComponent({
             const style = document.createElement('style');
             const widthPt = props.orientation === 'landscape' ? 842 : 595;
             const fontNum = 60;
+            if (operationStore) {
+                operationStore.calendarBaseFontSize.value = rect.width / fontNum;
+            }
 
             style.innerHTML = `
-                html .calendar-page {
-                    font-size: calc(${rect.width}px / ${fontNum}) !important;
-                }
+                // html {
+                //     font-size: calc(${rect.width}px / ${fontNum}) !important;
+                // }
 
                 @media print {
                     @page {size: A4 ${props.orientation}}
@@ -57,17 +62,19 @@ export default defineComponent({
             document.head.appendChild(style);
 
             styleElement.value = style;
-            console.log('style', style);
+            console.log('style', rect.width/fontNum, style);
         }
 
         onMounted(() => {
             setupPage();
+            window.addEventListener('resize', setupPage);
         })
 
         onUnmounted(() => {
             if (styleElement.value) {
                 document.head.removeChild(styleElement.value);
             }
+            window.removeEventListener('resize', setupPage);
         })
 
         watch(() => props.orientation, () => {

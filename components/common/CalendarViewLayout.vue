@@ -18,25 +18,19 @@ export default defineComponent({
 </script>
 
 <style lang="scss" module>
-$sidebarWidth: 20rem;
 
 .container {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 350px;
 
     overflow: hidden;
     width: 100vw;
     height: 100%;
 }
-@media print {
-    .container {
-        overflow: auto;
-        width: unset;
-        height: unset;
-    }
-}
+
 .calendar {
-    width: calc(100vw - ($sidebarWidth + 2px));
+    grid-column: 1 / 2;
+
     box-sizing: border-box;
     overflow-y: auto;
     user-select: none;
@@ -44,8 +38,9 @@ $sidebarWidth: 20rem;
     // border: 1px solid blue;
 }
 .sidebar {
+    grid-column: 2 / 3;
+
     box-sizing: border-box;
-    width: $sidebarWidth;
     overflow-y: scroll;
 
     text-align: left;
@@ -54,7 +49,34 @@ $sidebarWidth: 20rem;
     border-left: 1px solid #ddd;
     // box-shadow: -1px 5px 5px #aaa;
 }
+
+@media screen and (max-width:1000px) {
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 300px;
+    }
+    .calendar {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+    }
+    .sidebar {
+        grid-column: 1 / 2 !important;
+        grid-row: 2 / 3;
+        width: 100%;
+        border-left: unset;
+        border-top: 1px solid #ddd;
+    }
+}
+
 @media print {
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        overflow: none;
+        width: 100%;
+        height: unset;
+    }
+
     .sidebar {
         display: none;
     }

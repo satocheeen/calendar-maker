@@ -15,6 +15,7 @@ import SmallMonthlyCalendar from './SmallMonthlyCalendar.vue';
 import { StyleStoreKey } from '@/store/useStyle';
 import { inject } from 'vue';
 import { computed } from 'vue';
+import { OperationStoreKey } from '~/store/useOperation';
 
 export default defineComponent({
     name: 'YearCalendar',
@@ -39,11 +40,12 @@ export default defineComponent({
             return  fontDefine.value?.year?.fontFamily;
         })
 
+        const operationStore = inject(OperationStoreKey);
         const yearFontSize = computed(() => {
             const year = fontDefine.value?.year;
             if (!year) return '1rem';
             const size = !props.minimum ? year.thisYearFontSize : year.lastNextYearsFontSize;
-            return size + 'rem';
+            return operationStore?.fontSizePx(size);
         })
 
         const yearColor = computed(() => {
@@ -54,7 +56,7 @@ export default defineComponent({
             const day = fontDefine.value?.day;
             if (!day) return '1rem';
             const size = !props.minimum ? day.thisYearFontSize : day.lastNextYearsFontSize;
-            return size + 'rem';
+            return operationStore?.fontSizePx(size);
         })
 
         return {
