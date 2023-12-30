@@ -1,7 +1,6 @@
 <template>
     <PageLayout orientation="portrait">
         <div :class="$style.container">
-            {{ year }}
             {{ title }}
         </div>
     </PageLayout>
@@ -25,7 +24,7 @@ export default defineComponent({
         });
 
         const fontStyle = computed(() => {
-            return styleStore?.yearlyDefine.value.fonts.coverTitle;
+            return styleStore?.yearlyDefine.value.cover.font;
         });
 
         const fontFamily = computed(() => {
@@ -41,11 +40,15 @@ export default defineComponent({
         })
 
         const title = computed(() => {
-            return styleStore?.yearlyDefine.value.coverTitle;
+            const title = styleStore?.yearlyDefine.value.cover.title ?? '';
+            if (title.length > 0) {
+                return title;
+            } else {
+                return `${year.value} Calendar`;
+            }
         })
 
         return {
-            year,
             fontFamily,
             fontSize,
             color,
@@ -62,7 +65,9 @@ export default defineComponent({
     display: flex;
     align-items: center;
     justify-content: center;
-
+    white-space: pre-wrap;
+    text-align: center;
+    
     font-family: v-bind(fontFamily);
     font-size: v-bind(fontSize);
     color: v-bind(color);

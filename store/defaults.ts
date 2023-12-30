@@ -54,7 +54,6 @@ export const defaultYearlyDefine: YearlyCalendarStyleDefine = {
             fontSize: 2,
             color: '#808080',
         },
-        title: 'Calendar',
     },
 }
 

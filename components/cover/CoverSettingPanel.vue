@@ -5,12 +5,11 @@
         <YearSelect />
         <v-divider :class="$style.divider" />
 
-        <FontSettingItemForYear
+        <CoverFontSettingItem
             label="フォント"
-            target="coverTitle"
         />
 
-        <v-text-field
+        <v-textarea
             label="タイトル"
             v-model="title"
         />
@@ -23,21 +22,23 @@
 import { defineComponent } from 'vue';
 import PrintOutBtn from '../common/PrintOutBtn.vue';
 import YearSelect from '../common/YearSelect.vue';
-import FontSettingItemForYear from '../year-calendar/FontSettingItemForYear.vue';
+import CoverFontSettingItem from './CoverFontSettingItem.vue';
 import { StyleStoreKey } from '~/store/useStyle';
 
 export default defineComponent({
     name: 'CoverSettingPanel',
-    components: { PrintOutBtn, YearSelect, FontSettingItemForYear },
+    components: { PrintOutBtn, YearSelect, CoverFontSettingItem },
     setup() {
         const styleStore = inject(StyleStoreKey);
         const title = computed({
             get() {
-                return styleStore?.yearlyDefine.value.coverTitle;
+                return styleStore?.yearlyDefine.value.cover.title;
             },
             set(val) {
                 styleStore?.updateYearlyDefine({
-                    coverTitle: val,
+                    cover: {
+                        title: val,
+                    },
                 })
             }
         })
