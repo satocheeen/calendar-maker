@@ -42,15 +42,19 @@ export default defineComponent({
             }
             const style = document.createElement('style');
             const widthPt = props.orientation === 'landscape' ? 842 : 595;
+            const widthMm = props.orientation === 'landscape' ? 297 : 210;
             const fontNum = 60;
             if (operationStore) {
                 operationStore.calendarBaseFontSize.value = rect.width / fontNum;
             }
 
             const screenFontSize = rect.width / fontNum;
-            const printFontSize = widthPt / fontNum;
+            // const printFontSize = (widthPt / fontNum) + 'pt';
 
-            const pageSize = props.orientation === 'portrait' ? '210mm 297mm' : '297mm 210mm';
+            // const pageSize = props.orientation === 'portrait' ? '210mm 297mm' : '297mm 210mm';
+            const pageSize = props.orientation === 'portrait' ? '595pt 842pt' : '842pt 595pt';
+            const printFontSize = (widthPt / fontNum) + 'pt';
+            // const printFontSize = (widthMm / fontNum) + 'mm';
 
             style.innerHTML = `
                 :root {
@@ -63,7 +67,7 @@ export default defineComponent({
                 @media print {
                     @page {size: ${pageSize}}
                     html .calendar-page {
-                        font-size: ${printFontSize}pt !important;
+                        font-size: ${printFontSize} !important;
                     }
                 }
             `;
