@@ -18,7 +18,7 @@
                 <client-only>
                     <v-tooltip :text="explain">
                         <template v-slot:activator="{ props }">
-                            <v-btn icon @click="printOut" v-bind="props">
+                            <v-btn icon @click="printOut" v-bind="props" :disabled="disablePrintOut">
                                 <v-icon>mdi-printer</v-icon>
                             </v-btn>
                         </template>
@@ -97,9 +97,6 @@ export default defineComponent({
         const isSp = useMediaQuery('(max-width: 680px)')
 
         const route = useRoute();
-        const showMenu = computed(() => {
-            return route.path !== '/';
-        })
 
         const onFileOutput = () => {
             styleStore?.output();
@@ -112,6 +109,10 @@ export default defineComponent({
         const printOut = () => {
             window.print();
         }
+
+        const disablePrintOut = computed(() => {
+            return route.path === '/';
+        })
 
         const explain = computed(() => {
             const message = '印刷プレビュー画面を表示します。'
@@ -126,9 +127,9 @@ export default defineComponent({
             showDrawer,
             onFileOutput,
             onFileReadClick,
-            showMenu,
             printOut,
             explain,
+            disablePrintOut,
         }
 
     }
