@@ -48,6 +48,24 @@ export default defineComponent({
     font-family: 'Zen Maru Gothic';
     font-size: 16px;
     color: #333;
+
+    h2 {
+        margin: auto;
+        margin-top: 5rem;
+        border-bottom: 1px solid #ddd;
+        // max-width: 20rem;
+    }
+
+    p {
+        margin: 1rem;
+    }
+
+    ul {
+        list-style: none;
+        margin-top: 2rem;
+        // text-align: left;
+    }
+
 }
 @media screen and (max-width:500px) {
     .container {
@@ -57,20 +75,4 @@ export default defineComponent({
     }
 }
 
-h2 {
-    margin: auto;
-    margin-top: 5rem;
-    border-bottom: 1px solid #ddd;
-    // max-width: 20rem;
-}
-
-p {
-    margin: 1rem;
-}
-
-ul {
-    list-style: none;
-    margin-top: 2rem;
-    // text-align: left;
-}
 </style>

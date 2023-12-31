@@ -50,6 +50,8 @@ export default defineComponent({
             const screenFontSize = rect.width / fontNum;
             const printFontSize = widthPt / fontNum;
 
+            const pageSize = props.orientation === 'portrait' ? '210mm 297mm' : '297mm 210mm';
+
             style.innerHTML = `
                 :root {
                     --font-base: ${screenFontSize};
@@ -59,7 +61,7 @@ export default defineComponent({
                 }
 
                 @media print {
-                    @page {size: A4 ${props.orientation}}
+                    @page {size: ${pageSize}}
                     html .calendar-page {
                         font-size: ${printFontSize}pt !important;
                     }
