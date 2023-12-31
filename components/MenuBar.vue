@@ -56,7 +56,7 @@
 
             <v-divider></v-divider>
 
-            <v-list-item @click="onFileReadClick">
+            <v-list-item @click="printOut">
                 印刷
                 <template v-slot:append>
                     <v-icon icon="mdi-printer"></v-icon>

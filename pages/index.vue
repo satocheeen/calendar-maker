@@ -4,9 +4,6 @@
         <p>
             あなたオリジナルのカレンダーを。
         </p>
-        <p>
-            ※PC上で動作させてください。
-        </p>
 
         <h2>Monthly Calendar</h2>
         <p>
@@ -19,6 +16,17 @@
             年間カレンダーを作ります。
         </p>
         <v-btn plain to="/yearly">はじめる</v-btn>
+
+        <h2>留意事項</h2>
+        <ul>
+            <li>
+                印刷時は、「背景グラフィックを印刷する」設定にしてください。
+            </li>
+            <li>
+                PC上の見た目と印刷時の見た目は若干異なります。
+                印刷前に印刷プレビューでご確認ください。
+            </li>
+        </ul>
 
 </div>
 </template>
@@ -58,5 +66,11 @@ h2 {
 
 p {
     margin: 1rem;
+}
+
+ul {
+    list-style: none;
+    margin-top: 2rem;
+    // text-align: left;
 }
 </style>
