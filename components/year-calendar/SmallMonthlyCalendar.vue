@@ -103,7 +103,7 @@ export default defineComponent({
     height: 100%;
 
     display: grid;
-    grid-template-rows: calc(v-bind(monthFontSize) + 1px * var(--font-base)) 1fr;
+    grid-template-rows: calc(v-bind(monthFontSize) + 0.5px * var(--font-base)) 1fr;
 
     // >* {
     //     border: 1px solid red;
