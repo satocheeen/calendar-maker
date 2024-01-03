@@ -23,7 +23,6 @@
 import { inject, computed, defineComponent } from 'vue';
 import DateBox from './DateBox.vue';
 import { StyleStoreKey } from '@/store/useStyle';
-import useDate from '@/util/useDate';
 import { MonthlyCalendarSettingStoreKey } from './useMonthlyCalendarSetting';
 import { OperationStoreKey } from '~/store/useOperation';
 
@@ -38,10 +37,7 @@ export default defineComponent({
     setup() {
         const styleStore = inject(StyleStoreKey);
         const settingStore = inject(MonthlyCalendarSettingStoreKey);
-        const dates = useDate({
-            year: settingStore?.year.value ?? 0,
-            month: settingStore?.month.value ?? 0,
-        });
+        const dates = computed(() => settingStore?.dates.value);
 
         const styleDefine = computed(() => {
             return settingStore?.styleDefine.value;

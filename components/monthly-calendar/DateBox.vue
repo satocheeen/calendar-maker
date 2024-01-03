@@ -13,10 +13,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject, type CSSProperties } from 'vue';
-import { StyleStoreKey } from '@/store/useStyle';
-import { type DayInfo } from '@/util/useDate';
-import { MonthlyCalendarSettingStoreKey } from './useMonthlyCalendarSetting';
-import { OperationStoreKey } from '~/store/useOperation';
+import { MonthlyCalendarSettingStoreKey, type DayInfo } from './useMonthlyCalendarSetting';
 
 export default defineComponent({
     name: 'DateBox',
@@ -27,7 +24,6 @@ export default defineComponent({
         }
     },
     setup(props) {
-        const styleStore = inject(StyleStoreKey);
         const settingStore = inject(MonthlyCalendarSettingStoreKey);
 
         const dayNum = computed(() => {

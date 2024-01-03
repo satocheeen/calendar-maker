@@ -11,9 +11,9 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject } from 'vue';
-import useDate from '@/util/useDate';
 import { StyleStoreKey } from '@/store/useStyle';
 import { OperationStoreKey } from '~/store/useOperation';
+import useMonthlyCalendarSetting from '../monthly-calendar/useMonthlyCalendarSetting';
 
 export default defineComponent({
     name: 'SmallMonthlyCalendar',
@@ -32,7 +32,8 @@ export default defineComponent({
     },
     setup(props) {
         const styleStore = inject(StyleStoreKey);
-        const dates = useDate(props);
+        const calendarSetting = useMonthlyCalendarSetting(props);
+        const dates = computed(() => calendarSetting.dates.value);
 
         const days = computed(() => {
             return dates.value.map(d => {
