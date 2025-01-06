@@ -380,17 +380,32 @@ export function getEventDaysOfMonth(year: number, month: number): EventInfo[] {
     }
 
     // 振替休日
+    // 祝日法第3条第2項:
+    // - 「国民の祝日」が日曜日に当たるときは、その日後においてその日に最も近い「国民の祝日」でない日を休日とすることを定めています。
+    // 　　この規定は、いわゆる「振替休日」と呼ばれ、昭和48年の祝日法改正により設けられました。
     const sundayHolidays = list.filter(item => {
         if (!item.info.isHoliday) return false;
         const d = new Date(item.date.year, item.date.month, item.date.day);
         return d.getDay() === 0;
     });
     sundayHolidays.forEach(item => {
+        // その日後においてその日に最も近い「国民の祝日」でない日
+        const isHoliday = (i: number) => {
+            return list.some(listitem => {
+                if (!listitem.info.isHoliday) return false;
+                return item.date.year === listitem.date.year && item.date.month === listitem.date.month && (item.date.day + i) === listitem.date.day;
+            });
+        }
+        let i = 1;
+        while(isHoliday(i)) {
+            i++;
+        }
+
         list.push({
             date: {
                 year: item.date.year,
                 month: item.date.month,
-                day: item.date.day + 1,
+                day: item.date.day + i,
             },
             info: {
                 eventName: '振替休日',
